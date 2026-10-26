@@ -6,7 +6,7 @@
     <title>WildLight Vista | Nature & Wildlife Photography</title>
     
     <!-- Meta tags for SEO & Social Sharing -->
-    <meta name="description" content="WildLight Vista - Fine art nature, wildlife, and outdoor adventure photography portfolio.">
+    <meta name="description" content="WildLight Vista - Fine art nature, wildlife, and wilderness photography portfolio.">
     <meta name="author" content="WildLight Vista">
 
     <!-- Tailwind CSS CDN -->
@@ -22,7 +22,8 @@
                             goldHover: '#d49629',
                             dark: '#0B0F12',
                             darker: '#06080A',
-                            card: '#131920',
+                            card: '#121820',
+                            cardHover: '#18222d',
                             border: '#1E293B'
                         }
                     },
@@ -40,11 +41,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Phosphor Icons CDN for crisp UI icons -->
+    <!-- Phosphor Icons CDN for crisp photography UI icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        /* Smooth scrolling and photography scrollbars */
+        /* Smooth scrolling and minimalist dark scrollbars */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -52,7 +53,7 @@
             background: #0B0F12;
         }
         ::-webkit-scrollbar-thumb {
-            background: #223040;
+            background: #1f2b38;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -66,18 +67,18 @@
             -webkit-backdrop-filter: blur(14px);
         }
         .glass-card {
-            background: rgba(19, 25, 32, 0.75);
+            background: rgba(18, 24, 32, 0.75);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
         }
 
-        /* Gallery card hover animations */
-        .gallery-card {
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+        /* Smooth album & image card transitions */
+        .folder-card, .photo-card {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
         }
-        .gallery-card:hover {
+        .folder-card:hover, .photo-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8);
         }
 
         /* Lightbox modal transition */
@@ -92,6 +93,15 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
+        }
+
+        /* View switching crossfade animation */
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -108,10 +118,13 @@
             <!-- LOGO AREA                                                     -->
             <!-- ------------------------------------------------------------- -->
             <!-- 
+                ==============================================================
                 WHERE TO INCLUDE YOUR LOGO:
-                To use an image logo (PNG/SVG):
-                Replace the <div> below with:
-                <img src="images/logo.png" alt="WildLight Vista Logo" class="h-10 w-auto object-contain">
+                To use an image file (e.g., logo.png or logo.svg):
+                1. Place your logo image in your repo (e.g. "images/logo.png").
+                2. Replace the <a> tag inner content below with:
+                   <img src="images/logo.png" alt="WildLight Vista" class="h-10 w-auto object-contain">
+                ==============================================================
             -->
             <a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-lg p-1">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-gold to-amber-200 flex items-center justify-center text-black font-bold shadow-lg shadow-amber-500/10 group-hover:scale-105 transition-transform duration-300">
@@ -119,18 +132,18 @@
                 </div>
                 <div class="flex flex-col">
                     <span class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-brand-gold transition-colors">
-                        WildLight<span class="text-brand-gold font-light"> Vista</span>
+                        WildLight<span class="text-brand-gold font-light">Vista</span>
                     </span>
                     <span class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Fine Art Photography</span>
                 </div>
             </a>
 
-            <!-- Desktop Nav Links (Cleaned: No Gear link, single Explore Work link) -->
+            <!-- Desktop Nav Links -->
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
                 <a href="#about" class="text-slate-300 hover:text-brand-gold transition-colors">About</a>
                 <a href="#contact" class="text-slate-300 hover:text-brand-gold transition-colors">Contact</a>
-                <a href="#work" class="px-4 py-2 rounded-full border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black transition-all duration-300 text-xs uppercase tracking-wider font-semibold">
-                    View Portfolio
+                <a href="#work" onclick="showFolderView()" class="px-4 py-2 rounded-full border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black transition-all duration-300 text-xs uppercase tracking-wider font-semibold">
+                    Explore Collections
                 </a>
             </nav>
 
@@ -142,9 +155,9 @@
 
         <!-- Mobile Drawer Navigation -->
         <div id="mobileMenu" class="hidden md:hidden glass-nav border-b border-brand-border px-6 py-6 space-y-4">
-            <a href="#about" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">About</a>
+            <a href="#work" onclick="showFolderView()" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">Explore Collection</a>
+            <a href="#about" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">About the Artist</a>
             <a href="#contact" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">Contact</a>
-            <a href="#work" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">View Portfolio</a>
             <div class="pt-2">
                 <a href="#contact" class="mobile-link block text-center w-full py-2.5 rounded-lg bg-brand-gold text-black font-semibold text-sm">
                     Inquire / Licensing
@@ -160,9 +173,9 @@
     <section class="relative min-h-[85vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
         <div class="absolute inset-0 -z-10 bg-brand-darker">
             <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80" 
-                 alt="Moody mountain lake" 
-                 class="w-full h-full object-cover object-center opacity-35 scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/75 to-brand-dark/40"></div>
+                 alt="Wilderness mountain horizon" 
+                 class="w-full h-full object-cover object-center opacity-30 scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/80 to-brand-dark/40"></div>
         </div>
 
         <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
@@ -179,17 +192,17 @@
             </h1>
 
             <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
-                Capturing fine art landscapes, remote wildlife, and raw wilderness encounters. All photographs are watermarked with artist copyright upon export.
+                Capturing fine art landscapes, remote wildlife, and raw wilderness encounters. Curated into thematic collections.
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <a href="#work" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-brand-goldHover text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
-                    <span>Explore Work</span>
-                    <i class="ph-bold ph-arrow-down"></i>
+                <a href="#work" onclick="showFolderView()" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-brand-goldHover text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-folder-open text-base"></i>
+                    <span>Browse Albums</span>
                 </a>
                 <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-white font-medium text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-paper-plane-tilt text-base"></i>
                     <span>Get In Touch</span>
-                    <i class="ph-bold ph-paper-plane-tilt"></i>
                 </a>
             </div>
         </div>
@@ -197,257 +210,196 @@
 
 
     <!-- ========================================================================= -->
-    <!-- SINGLE SHOWCASE SECTION: "EXPLORE WORK"                                  -->
+    <!-- EXPLORE WORK: CATEGORY FOLDERS / ALBUMS SHOWCASE                          -->
     <!-- ========================================================================= -->
     <section id="work" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6 border-b border-brand-border/60 pb-8">
-            <div>
-                <span class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Portfolio</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Explore Work</h2>
-                <p class="text-slate-400 text-sm mt-2 max-w-md">Click any image to view details, EXIF data, or download with official copyright stamp.</p>
+        
+        <!-- ===================================================================== -->
+        <!-- VIEW 1: ALBUM / CATEGORY FOLDERS LIST                                 -->
+        <!-- ===================================================================== -->
+        <div id="foldersSection" class="fade-in">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b border-brand-border/60 pb-8">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-widest text-brand-gold flex items-center gap-1.5">
+                        <i class="ph-bold ph-folder-notch-open"></i> Portfolio Collections
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Explore Work by Albums</h2>
+                    <p class="text-slate-400 text-sm mt-2 max-w-lg">
+                        Select a category folder below to open and browse all photographs inside that series.
+                    </p>
+                </div>
             </div>
 
-            <!-- Category Filters -->
-            <div class="flex flex-wrap gap-2" id="filterContainer">
-                <button data-filter="all" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all bg-brand-gold text-black">
-                    All Works
-                </button>
-                <button data-filter="landscape" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-300">
-                    Landscape
-                </button>
-                <button data-filter="wildlife" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-300">
-                    Wildlife
-                </button>
-                <button data-filter="adventure" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-300">
-                    Adventure
-                </button>
-                <button data-filter="bw" class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider transition-all bg-slate-800/80 hover:bg-slate-700 text-slate-300">
-                    Black & White
-                </button>
+            <!--
+                ===================================================================
+                INSTRUCTIONS: HOW TO ADD NEW CATEGORY ALBUMS
+                ===================================================================
+                To add a new album:
+                1. Copy one of the `<div class="folder-card ...">` blocks below.
+                2. Set `onclick="openAlbum('your-album-slug')"` (e.g. `openAlbum('coastal')`).
+                3. Update the cover photo `<img src="...">`, title, description, and photo count badge.
+                4. Inside the JAVASCRIPT section near the bottom of this file, add your new album
+                   photos array inside the `ALBUMS_DATA` object!
+                ===================================================================
+            -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Folder 1: Landscapes -->
+                <div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+                     onclick="openAlbum('landscapes')">
+                    <div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" 
+                             alt="Landscapes Album Cover" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+                        <span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="landscapes">
+                            -- Photos
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+                                <i class="ph-bold ph-folder"></i> Album
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+                                Wild Landscapes
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                Towering mountain peaks, mirror lakes, and sweeping vistas at sunrise & twilight.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+                            <span>Open Collection</span>
+                            <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Folder 2: Wildlife -->
+                <div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+                     onclick="openAlbum('wildlife')">
+                    <div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+                        <img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=900&q=80" 
+                             alt="Wildlife Album Cover" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+                        <span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="wildlife">
+                            -- Photos
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+                                <i class="ph-bold ph-folder"></i> Album
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+                                Wildlife & Fauna
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                Intimate wildlife portraits documented respectfully across northern sanctuaries.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+                            <span>Open Collection</span>
+                            <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Folder 3: Mountain & Trails -->
+                <div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+                     onclick="openAlbum('adventure')">
+                    <div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+                        <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" 
+                             alt="Mountain & Trails Album Cover" 
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+                        <span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="adventure">
+                            -- Photos
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+                                <i class="ph-bold ph-folder"></i> Album
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+                                Mountains & Trails
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                High-altitude treks, jagged passes, alpine meadows, and solitary ridges.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+                            <span>Open Collection</span>
+                            <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Folder 4: Black & White -->
+                <div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+                     onclick="openAlbum('monochrome')">
+                    <div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+                        <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=900&q=80" 
+                             alt="Monochrome Album Cover" 
+                             class="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-108">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+                        <span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="monochrome">
+                            -- Photos
+                        </span>
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+                                <i class="ph-bold ph-folder"></i> Album
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+                                Monochrome Series
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+                                High contrast geological forms, shadow plays, and stripped-down textures.
+                            </p>
+                        </div>
+                        <div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+                            <span>Open Collection</span>
+                            <i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- ========================================================================= -->
-        <!-- PHOTO GRID CONTAINER                                                      -->
-        <!-- ========================================================================= -->
-        <!--
-            =======================================================================
-            INSTRUCTIONS: HOW TO ADD NEW IMAGES IN THE FUTURE
-            =======================================================================
-            1. Put your image in your GitHub repo (e.g. `images/my-new-shot.jpg`).
-            2. Copy any `<div class="gallery-item ...">` block below.
-            3. Paste it inside `<div id="galleryGrid" ...>`.
-            4. Adjust:
-               - data-category="landscape" (or wildlife, adventure, bw)
-               - data-title="Your Photo Title"
-               - data-location="Location, Country"
-               - data-iso="100", data-shutter="1/500s", data-aperture="f/4.0", data-focal="70mm"
-               - Update `<img src="..." alt="...">` with your image URL or path.
-            =======================================================================
-        -->
-        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <!-- Item 1: Landscape -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="landscape"
-                 data-title="Emerald Lake Solitude"
-                 data-location="Banff National Park, Canada"
-                 data-iso="100"
-                 data-shutter="1/320s"
-                 data-aperture="f/8.0"
-                 data-focal="24mm">
-                
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Emerald Lake Solitude" 
-                     loading="lazy"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+        <!-- ===================================================================== -->
+        <!-- VIEW 2: DEDICATED ALBUM GALLERY (Appears when an album is clicked)    -->
+        <!-- ===================================================================== -->
+        <div id="albumGallerySection" class="hidden">
+            <!-- Navigation Header for the Opened Album -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-brand-border/60 pb-6">
+                <div>
+                    <!-- Back Button to return to all albums -->
+                    <button onclick="showFolderView()" 
+                            class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-gold hover:text-white bg-slate-800/80 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition-all mb-3 focus:outline-none focus:ring-2 focus:ring-brand-gold">
+                        <i class="ph-bold ph-arrow-left"></i>
+                        <span>Back to All Albums</span>
+                    </button>
+                    <h2 id="albumActiveTitle" class="text-3xl sm:text-4xl font-serif font-bold text-white">Album Title</h2>
+                    <p id="albumActiveDesc" class="text-slate-400 text-sm mt-1 max-w-xl">Album description</p>
+                </div>
 
-                <!-- Hover Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Banff, Canada
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Emerald Lake Solitude</h3>
-                        <!-- Quick Download Button with Watermark -->
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">24mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/8.0</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">1/320s</span>
-                    </div>
+                <div class="flex items-center gap-2 text-xs text-slate-400">
+                    <span id="albumActiveCount" class="font-mono text-brand-gold font-bold">0</span> photos in this collection
                 </div>
             </div>
 
-            <!-- Item 2: Wildlife -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="wildlife"
-                 data-title="Monarch of the Mist"
-                 data-location="Highlands, Scotland"
-                 data-iso="800"
-                 data-shutter="1/1000s"
-                 data-aperture="f/4.0"
-                 data-focal="400mm">
-                
-                <img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Monarch of the Mist" 
-                     loading="lazy"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Scotland
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Monarch of the Mist</h3>
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">400mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/4.0</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">1/1000s</span>
-                    </div>
-                </div>
+            <!-- Photos Grid for the active album -->
+            <div id="albumPhotosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated by JavaScript from ALBUMS_DATA -->
             </div>
-
-            <!-- Item 3: Black & White -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="bw"
-                 data-title="Textures of Silence"
-                 data-location="Dolomites, Italy"
-                 data-iso="200"
-                 data-shutter="1/250s"
-                 data-aperture="f/11"
-                 data-focal="35mm">
-                
-                <img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Textures of Silence" 
-                     loading="lazy"
-                     class="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-105">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Dolomites, Italy
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Textures of Silence</h3>
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">35mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/11</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">ISO 200</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 4: Adventure -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="adventure"
-                 data-title="Edge of the Abyss"
-                 data-location="Yosemite Valley, USA"
-                 data-iso="100"
-                 data-shutter="1/400s"
-                 data-aperture="f/5.6"
-                 data-focal="16mm">
-                
-                <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Edge of the Abyss" 
-                     loading="lazy"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Yosemite, USA
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Edge of the Abyss</h3>
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">16mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/5.6</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">1/400s</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 5: Wildlife -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="wildlife"
-                 data-title="Arctic Stare"
-                 data-location="Svalbard, Norway"
-                 data-iso="400"
-                 data-shutter="1/1600s"
-                 data-aperture="f/2.8"
-                 data-focal="600mm">
-                
-                <img src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Arctic Stare" 
-                     loading="lazy"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Svalbard, Norway
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Arctic Stare</h3>
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">600mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/2.8</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">1/1600s</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 6: Landscape -->
-            <div class="gallery-item gallery-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]"
-                 data-category="landscape"
-                 data-title="Golden Hour Crest"
-                 data-location="Patagonia, Chile"
-                 data-iso="100"
-                 data-shutter="1/80s"
-                 data-aperture="f/13"
-                 data-focal="28mm">
-                
-                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80" 
-                     alt="Golden Hour Crest" 
-                     loading="lazy"
-                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-
-                <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                    <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
-                        <i class="ph-bold ph-map-pin"></i> Patagonia, Chile
-                    </span>
-                    <div class="flex items-center justify-between mt-0.5">
-                        <h3 class="text-lg font-serif font-bold text-white">Golden Hour Crest</h3>
-                        <button class="quick-download-btn p-2 bg-brand-gold hover:bg-amber-400 text-black rounded-lg text-xs font-semibold transition-transform active:scale-95 flex items-center gap-1" title="Download with Copyright">
-                            <i class="ph-bold ph-download-simple text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
-                        <span class="bg-black/60 px-2 py-0.5 rounded">28mm</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">f/13</span>
-                        <span class="bg-black/60 px-2 py-0.5 rounded">1/80s</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
+
     </section>
 
 
@@ -466,7 +418,7 @@
                              class="w-full aspect-[4/5] object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-6 right-6">
-                            <span class="text-xs uppercase tracking-widest text-brand-gold font-semibold">Rakeshkumar Shingod</span>
+                            <span class="text-xs uppercase tracking-widest text-brand-gold font-semibold">Founder & Lead Artist</span>
                             <h3 class="text-2xl font-serif font-bold text-white mt-0.5">WildLight Vista</h3>
                         </div>
                     </div>
@@ -487,7 +439,7 @@
                     </p>
 
                     <p class="text-slate-400 text-sm leading-relaxed">
-                        Every photograph is an authentic encounter under natural light. When downloaded from this gallery, prints and files carry our signature copyright stamp for artistic attribution and protection.
+                        Every photograph is an authentic encounter under natural light. Images are organized into curated themed albums to offer immersive visual journeys across high alpine, dense boreal forests, and arctic frontiers.
                     </p>
 
                     <!-- Stats -->
@@ -522,7 +474,7 @@
                     <span class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Collaborate</span>
                     <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Get in Touch</h2>
                     <p class="text-slate-300 text-sm mt-3 leading-relaxed">
-                        Looking for high-resolution unwatermarked licensing, fine art museum prints, or booking a photography expedition? Send a direct message below.
+                        Looking for editorial licensing, museum fine art prints, or interested in a photography expedition workshop? Send a direct message below.
                     </p>
 
                     <div class="mt-8 space-y-4">
@@ -565,8 +517,9 @@
                 <!-- CONTACT FORM (FormSubmit AJAX Integration)                    -->
                 <!-- ------------------------------------------------------------- -->
                 <!-- 
-                    REPLACE "your-email@example.com" WITH YOUR REAL EMAIL ADDRESS 
-                    (e.g. rakeshshingod@gmail.com). You will receive all messages directly!
+                    HOW TO CONFIGURE YOUR EMAIL:
+                    Replace "your-email@example.com" in the action URL below with 
+                    your actual email address (e.g. yourname@gmail.com).
                 -->
                 <div class="glass-card rounded-3xl p-6 sm:p-8 border border-brand-border/60">
                     <form id="portfolioContactForm" 
@@ -586,6 +539,17 @@
                             <label for="email" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Email Address *</label>
                             <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold text-sm transition-colors" placeholder="jane@example.com">
                         </div>
+
+                        <div>
+                            <label for="inquiryType" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Inquiry Type</label>
+                            <select id="inquiryType" name="inquiryType" class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white text-sm focus:outline-none focus:border-brand-gold transition-colors">
+                                <option value="Print Purchase">Fine Art Print Purchase</option>
+                                <option value="Licensing">Commercial Image Licensing</option>
+                                <option value="Workshop Booking">Workshop / Field Expedition</option>
+                                <option value="General Question">General Inquiry</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label for="message" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Message *</label>
                             <textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold text-sm transition-colors" placeholder="Tell me about your project, wall print dimensions, or licensing needs..."></textarea>
@@ -607,33 +571,33 @@
 
 
     <!-- ========================================================================= -->
-    <!-- INTERACTIVE LIGHTBOX MODAL (Image Preview + EXIF + Watermarked Download)  -->
+    <!-- INTERACTIVE LIGHTBOX MODAL (Image Preview + EXIF Details — NO DOWNLOAD)   -->
     <!-- ========================================================================= -->
     <div id="lightbox" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/95 backdrop-blur-md">
         
         <!-- Close Button -->
-        <button id="lightboxClose" aria-label="Close Lightbox" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-slate-400 hover:text-white bg-slate-800/60 p-2.5 rounded-full z-20 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-colors">
+        <button id="lightboxClose" aria-label="Close Lightbox" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-slate-400 hover:text-white bg-slate-800/70 p-2.5 rounded-full z-20 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-colors">
             <i class="ph-bold ph-x text-2xl"></i>
         </button>
 
         <!-- Previous Button -->
-        <button id="lightboxPrev" aria-label="Previous Image" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/70 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
+        <button id="lightboxPrev" aria-label="Previous Image" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/80 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
             <i class="ph-bold ph-caret-left text-2xl"></i>
         </button>
 
         <!-- Next Button -->
-        <button id="lightboxNext" aria-label="Next Image" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/70 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
+        <button id="lightboxNext" aria-label="Next Image" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/80 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
             <i class="ph-bold ph-caret-right text-2xl"></i>
         </button>
 
-        <!-- Content Container -->
+        <!-- Content Frame -->
         <div class="relative max-w-5xl w-full flex flex-col items-center max-h-[92vh]">
-            <!-- Image Frame -->
-            <div class="w-full flex justify-center overflow-hidden rounded-xl bg-brand-dark/40">
-                <img id="lightboxImg" src="" alt="Fullscreen Photograph" class="max-h-[68vh] w-auto max-w-full object-contain rounded-xl shadow-2xl transition-all duration-300">
+            <!-- Main Photo Display -->
+            <div class="w-full flex justify-center overflow-hidden rounded-xl bg-brand-dark/40 select-none">
+                <img id="lightboxImg" src="" alt="WildLight Vista Full Photograph" class="max-h-[70vh] w-auto max-w-full object-contain rounded-xl shadow-2xl transition-all duration-300">
             </div>
 
-            <!-- Lightbox Metadata & Actions Bar -->
+            <!-- Lightbox Metadata Bar -->
             <div class="w-full mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
                 <div>
                     <h3 id="lightboxTitle" class="text-lg font-serif font-bold text-white">Title</h3>
@@ -642,23 +606,15 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-3 flex-wrap">
-                    <!-- Camera EXIF Settings -->
-                    <div class="flex items-center gap-2 sm:gap-3 text-[11px] font-mono text-slate-300 bg-slate-800/70 px-3 py-2 rounded-lg border border-slate-700">
-                        <span id="metaFocal">--mm</span>
-                        <span class="text-slate-600">|</span>
-                        <span id="metaAperture">f/--</span>
-                        <span class="text-slate-600">|</span>
-                        <span id="metaShutter">1/--s</span>
-                        <span class="text-slate-600">|</span>
-                        <span id="metaIso">ISO --</span>
-                    </div>
-
-                    <!-- Watermarked Download Button inside Lightbox -->
-                    <button id="lightboxDownloadBtn" class="px-4 py-2 rounded-lg bg-brand-gold hover:bg-amber-400 text-black font-semibold text-xs tracking-wider uppercase transition-all duration-300 flex items-center gap-2 shadow-md">
-                        <i class="ph-bold ph-download-simple text-sm"></i>
-                        <span id="downloadText">Download Photo</span>
-                    </button>
+                <!-- Camera EXIF Settings Badges -->
+                <div class="flex items-center gap-2 sm:gap-3 text-[11px] font-mono text-slate-300 bg-slate-800/80 px-3.5 py-2 rounded-lg border border-slate-700">
+                    <span id="metaFocal">--mm</span>
+                    <span class="text-slate-600">|</span>
+                    <span id="metaAperture">f/--</span>
+                    <span class="text-slate-600">|</span>
+                    <span id="metaShutter">1/--s</span>
+                    <span class="text-slate-600">|</span>
+                    <span id="metaIso">ISO --</span>
                 </div>
             </div>
         </div>
@@ -685,24 +641,312 @@
 
 
     <!-- ========================================================================= -->
-    <!-- JAVASCRIPT LOGIC                                                          -->
+    <!-- JAVASCRIPT LOGIC & PHOTO ALBUM DATABASE                                   -->
     <!-- ========================================================================= -->
     <script>
         // Set dynamic current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // -------------------------------------------------------------
-        // CONFIGURATION: YOUR COPYRIGHT WATERMARK SETTINGS
-        // -------------------------------------------------------------
-        // You can change your signature name or copyright text here:
-        const WATERMARK_CONFIG = {
-            authorName: "Rakeshkumar Shingod",
-            rightsText: "© All Rights Reserved",
-            fontFamily: "Inter, sans-serif"
+        /*
+            =======================================================================
+            ALBUMS & PHOTO DATABASE (HOW TO ADD NEW PHOTOS & CATEGORIES)
+            =======================================================================
+            Each album has:
+            - title: Album display name
+            - desc: Short subtitle or description
+            - photos: Array of photo items.
+            
+            To ADD A PHOTO into an existing album:
+            Add a new object inside the photos array:
+            {
+                url: "images/your-photo.jpg",  // Or URL from your repo or Unsplash
+                title: "Photo Title",
+                location: "Location, Country",
+                focal: "35mm",
+                aperture: "f/8",
+                shutter: "1/500s",
+                iso: "100"
+            }
+            =======================================================================
+        */
+        const ALBUMS_DATA = {
+            landscapes: {
+                title: "Wild Landscapes",
+                desc: "Glacial lakes, dramatic morning mists, and untouched mountain ranges.",
+                photos: [
+                    {
+                        url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+                        title: "Emerald Lake Solitude",
+                        location: "Banff National Park, Canada",
+                        focal: "24mm",
+                        aperture: "f/8.0",
+                        shutter: "1/320s",
+                        iso: "100"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
+                        title: "Golden Hour Crest",
+                        location: "Patagonia, Chile",
+                        focal: "28mm",
+                        aperture: "f/13",
+                        shutter: "1/80s",
+                        iso: "100"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1200&q=80",
+                        title: "Valley of the Sunbeams",
+                        location: "Yosemite, California",
+                        focal: "50mm",
+                        aperture: "f/5.6",
+                        shutter: "1/200s",
+                        iso: "200"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1200&q=80",
+                        title: "Canyon Cascade",
+                        location: "Oregon, USA",
+                        focal: "16mm",
+                        aperture: "f/11",
+                        shutter: "1.5s",
+                        iso: "64"
+                    }
+                ]
+            },
+            wildlife: {
+                title: "Wildlife & Fauna",
+                desc: "Wild animals documented in their pristine natural habitats without disturbance.",
+                photos: [
+                    {
+                        url: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=1200&q=80",
+                        title: "Monarch of the Mist",
+                        location: "Highlands, Scotland",
+                        focal: "400mm",
+                        aperture: "f/4.0",
+                        shutter: "1/1000s",
+                        iso: "800"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1200&q=80",
+                        title: "Arctic Stare",
+                        location: "Svalbard, Norway",
+                        focal: "600mm",
+                        aperture: "f/2.8",
+                        shutter: "1/1600s",
+                        iso: "400"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?auto=format&fit=crop&w=1200&q=80",
+                        title: "Grizzly on the Rapids",
+                        location: "Katmai, Alaska",
+                        focal: "500mm",
+                        aperture: "f/4.5",
+                        shutter: "1/2000s",
+                        iso: "640"
+                    }
+                ]
+            },
+            adventure: {
+                title: "Mountains & Trails",
+                desc: "Documenting human presence and solitary paths amidst colossal geology.",
+                photos: [
+                    {
+                        url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80",
+                        title: "Edge of the Abyss",
+                        location: "Yosemite Valley, USA",
+                        focal: "16mm",
+                        aperture: "f/5.6",
+                        shutter: "1/400s",
+                        iso: "100"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+                        title: "Pass to the Clouds",
+                        location: "Swiss Alps, Switzerland",
+                        focal: "24mm",
+                        aperture: "f/8.0",
+                        shutter: "1/640s",
+                        iso: "160"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
+                        title: "Night Under the Ridgeline",
+                        location: "Fitz Roy, Argentina",
+                        focal: "14mm",
+                        aperture: "f/2.8",
+                        shutter: "20s",
+                        iso: "3200"
+                    }
+                ]
+            },
+            monochrome: {
+                title: "Monochrome Series",
+                desc: "Dramatic contrast studies in pure light, deep shadow, and raw textures.",
+                photos: [
+                    {
+                        url: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1200&q=80",
+                        title: "Textures of Silence",
+                        location: "Dolomites, Italy",
+                        focal: "35mm",
+                        aperture: "f/11",
+                        shutter: "1/250s",
+                        iso: "200"
+                    },
+                    {
+                        url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+                        title: "Dune Ripples in Shadow",
+                        location: "Death Valley, USA",
+                        focal: "70mm",
+                        aperture: "f/8.0",
+                        shutter: "1/500s",
+                        iso: "100"
+                    }
+                ]
+            }
         };
 
+        // Populate photo counts on album badges automatically
+        function updateAlbumBadges() {
+            document.querySelectorAll('.album-count-badge').forEach(badge => {
+                const albumKey = badge.getAttribute('data-album');
+                if (ALBUMS_DATA[albumKey]) {
+                    const count = ALBUMS_DATA[albumKey].photos.length;
+                    badge.textContent = `${count} ${count === 1 ? 'Photo' : 'Photos'}`;
+                }
+            });
+        }
+        updateAlbumBadges();
+
         // -------------------------------------------------------------
-        // Mobile Navigation Toggle
+        // View Switching Logic (Folders vs Album Gallery)
+        // -------------------------------------------------------------
+        const foldersSection = document.getElementById('foldersSection');
+        const albumGallerySection = document.getElementById('albumGallerySection');
+        const albumActiveTitle = document.getElementById('albumActiveTitle');
+        const albumActiveDesc = document.getElementById('albumActiveDesc');
+        const albumActiveCount = document.getElementById('albumActiveCount');
+        const albumPhotosGrid = document.getElementById('albumPhotosGrid');
+
+        let currentActiveAlbumPhotos = [];
+
+        function showFolderView() {
+            albumGallerySection.classList.add('hidden');
+            foldersSection.classList.remove('hidden');
+            foldersSection.classList.add('fade-in');
+        }
+
+        function openAlbum(albumKey) {
+            const album = ALBUMS_DATA[albumKey];
+            if (!album) return;
+
+            currentActiveAlbumPhotos = album.photos;
+
+            albumActiveTitle.textContent = album.title;
+            albumActiveDesc.textContent = album.desc;
+            albumActiveCount.textContent = album.photos.length;
+
+            // Clear and render photos
+            albumPhotosGrid.innerHTML = '';
+            album.photos.forEach((photo, idx) => {
+                const photoCard = document.createElement('div');
+                photoCard.className = "photo-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]";
+                photoCard.innerHTML = `
+                    <img src="${photo.url}" alt="${photo.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                        <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
+                            <i class="ph-bold ph-map-pin"></i> ${photo.location}
+                        </span>
+                        <h3 class="text-lg font-serif font-bold text-white mt-0.5">${photo.title}</h3>
+                        <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
+                            <span class="bg-black/60 px-2 py-0.5 rounded">${photo.focal}</span>
+                            <span class="bg-black/60 px-2 py-0.5 rounded">${photo.aperture}</span>
+                            <span class="bg-black/60 px-2 py-0.5 rounded">${photo.shutter}</span>
+                            <span class="bg-black/60 px-2 py-0.5 rounded">ISO ${photo.iso}</span>
+                        </div>
+                    </div>
+                `;
+                photoCard.addEventListener('click', () => openLightbox(idx));
+                albumPhotosGrid.appendChild(photoCard);
+            });
+
+            foldersSection.classList.add('hidden');
+            albumGallerySection.classList.remove('hidden');
+            albumGallerySection.classList.add('fade-in');
+
+            // Smoothly scroll to the top of work area
+            document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // -------------------------------------------------------------
+        // Fullscreen Lightbox Modal (No Download Button)
+        // -------------------------------------------------------------
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxTitle = document.getElementById('lightboxTitle');
+        const lightboxLocation = document.getElementById('lightboxLocation');
+        const metaFocal = document.getElementById('metaFocal');
+        const metaAperture = document.getElementById('metaAperture');
+        const metaShutter = document.getElementById('metaShutter');
+        const metaIso = document.getElementById('metaIso');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let currentPhotoIndex = 0;
+
+        function openLightbox(index) {
+            if (!currentActiveAlbumPhotos || currentActiveAlbumPhotos.length === 0) return;
+
+            currentPhotoIndex = index;
+            const photo = currentActiveAlbumPhotos[currentPhotoIndex];
+
+            lightboxImg.src = photo.url;
+            lightboxImg.alt = photo.title;
+            lightboxTitle.textContent = photo.title;
+            lightboxLocation.innerHTML = `<i class="ph-bold ph-map-pin"></i> ${photo.location}`;
+            
+            metaFocal.textContent = photo.focal || '--mm';
+            metaAperture.textContent = photo.aperture || 'f/--';
+            metaShutter.textContent = photo.shutter || '1/--s';
+            metaIso.textContent = `ISO ${photo.iso || '--'}`;
+
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function showNextPhoto() {
+            if (currentActiveAlbumPhotos.length === 0) return;
+            currentPhotoIndex = (currentPhotoIndex + 1) % currentActiveAlbumPhotos.length;
+            openLightbox(currentPhotoIndex);
+        }
+
+        function showPrevPhoto() {
+            if (currentActiveAlbumPhotos.length === 0) return;
+            currentPhotoIndex = (currentPhotoIndex - 1 + currentActiveAlbumPhotos.length) % currentActiveAlbumPhotos.length;
+            openLightbox(currentPhotoIndex);
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxNext.addEventListener('click', showNextPhoto);
+        lightboxPrev.addEventListener('click', showPrevPhoto);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') showNextPhoto();
+            if (e.key === 'ArrowLeft') showPrevPhoto();
+        });
+
+        // -------------------------------------------------------------
+        // Mobile Navigation Drawer Toggle
         // -------------------------------------------------------------
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
@@ -721,278 +965,7 @@
         });
 
         // -------------------------------------------------------------
-        // Category Filtering
-        // -------------------------------------------------------------
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const galleryItems = document.querySelectorAll('.gallery-item');
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filter = button.getAttribute('data-filter');
-
-                filterButtons.forEach(btn => {
-                    btn.classList.remove('bg-brand-gold', 'text-black');
-                    btn.classList.add('bg-slate-800/80', 'text-slate-300');
-                });
-                button.classList.add('bg-brand-gold', 'text-black');
-                button.classList.remove('bg-slate-800/80', 'text-slate-300');
-
-                galleryItems.forEach(item => {
-                    const category = item.getAttribute('data-category');
-                    if (filter === 'all' || category === filter) {
-                        item.classList.remove('hidden');
-                    } else {
-                        item.classList.add('hidden');
-                    }
-                });
-            });
-        });
-
-        // -------------------------------------------------------------
-        // CLIENT-SIDE WATERMARK ENGINE & DOWNLOAD LOGIC
-        // Uses HTML5 Canvas to stamp the artist copyright onto the image
-        // -------------------------------------------------------------
-        async function downloadImageWithWatermark(imageUrl, photoTitle, buttonElement = null) {
-            let originalButtonContent = '';
-            if (buttonElement) {
-                originalButtonContent = buttonElement.innerHTML;
-                buttonElement.disabled = true;
-                buttonElement.innerHTML = `<i class="ph-bold ph-spinner animate-spin text-sm"></i> Watermarking...`;
-            }
-
-            try {
-                // Fetch image as blob to bypass cross-origin canvas security where applicable
-                const response = await fetch(imageUrl, { mode: 'cors' });
-                const blob = await response.blob();
-                
-                const img = new Image();
-                const blobUrl = URL.createObjectURL(blob);
-
-                img.onload = () => {
-                    // Create an in-memory canvas matching the image's original dimensions
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    canvas.width = img.naturalWidth || img.width;
-                    canvas.height = img.naturalHeight || img.height;
-
-                    // 1. Draw original photo onto canvas
-                    ctx.drawImage(img, 0, 0);
-
-                    // 2. Compute dynamic watermark size based on image resolution
-                    const baseDimension = Math.min(canvas.width, canvas.height);
-                    const fontSize = Math.max(16, Math.floor(baseDimension * 0.024));
-                    const subFontSize = Math.max(12, Math.floor(fontSize * 0.7));
-                    const padding = Math.max(20, Math.floor(baseDimension * 0.035));
-
-                    const watermarkPrimary = `${WATERMARK_CONFIG.authorName}`;
-                    const watermarkSecondary = ` • ${WATERMARK_CONFIG.rightsText}`;
-
-                    // Measure text for background pill
-                    ctx.font = `600 ${fontSize}px ${WATERMARK_CONFIG.fontFamily}`;
-                    const textWidth = ctx.measureText(watermarkPrimary + watermarkSecondary).width;
-                    const badgeHeight = fontSize * 2.2;
-                    const badgeWidth = textWidth + padding * 1.6;
-
-                    const badgeX = canvas.width - badgeWidth - padding;
-                    const badgeY = canvas.height - badgeHeight - padding;
-
-                    // 3. Draw elegant dark frosted watermark pill background
-                    ctx.save();
-                    ctx.fillStyle = 'rgba(11, 15, 18, 0.78)';
-                    ctx.shadowColor = 'rgba(0, 0, 0, 0.6)';
-                    ctx.shadowBlur = 16;
-                    ctx.shadowOffsetX = 0;
-                    ctx.shadowOffsetY = 4;
-
-                    // Rounded rectangle for watermark pill
-                    const radius = badgeHeight / 3.5;
-                    ctx.beginPath();
-                    ctx.moveTo(badgeX + radius, badgeY);
-                    ctx.lineTo(badgeX + badgeWidth - radius, badgeY);
-                    ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY, badgeX + badgeWidth, badgeY + radius);
-                    ctx.lineTo(badgeX + badgeWidth, badgeY + badgeHeight - radius);
-                    ctx.quadraticCurveTo(badgeX + badgeWidth, badgeY + badgeHeight, badgeX + badgeWidth - radius, badgeY + badgeHeight);
-                    ctx.lineTo(badgeX + radius, badgeY + badgeHeight);
-                    ctx.quadraticCurveTo(badgeX, badgeY + badgeHeight, badgeX, badgeY + badgeHeight - radius);
-                    ctx.lineTo(badgeX, badgeY + radius);
-                    ctx.quadraticCurveTo(badgeX, badgeY, badgeX + radius, badgeY);
-                    ctx.closePath();
-                    ctx.fill();
-                    ctx.restore();
-
-                    // Subtle gold border on pill
-                    ctx.save();
-                    ctx.strokeStyle = 'rgba(229, 169, 59, 0.45)';
-                    ctx.lineWidth = Math.max(1, Math.floor(fontSize * 0.06));
-                    ctx.stroke();
-                    ctx.restore();
-
-                    // 4. Draw Copyright Text
-                    ctx.save();
-                    ctx.textBaseline = 'middle';
-                    const textY = badgeY + (badgeHeight / 2);
-
-                    // Primary name in brand gold
-                    ctx.fillStyle = '#E5A93B';
-                    ctx.font = `700 ${fontSize}px ${WATERMARK_CONFIG.fontFamily}`;
-                    ctx.fillText(watermarkPrimary, badgeX + (padding * 0.8), textY);
-
-                    // Rights notice in clean white
-                    const primWidth = ctx.measureText(watermarkPrimary).width;
-                    ctx.fillStyle = '#E2E8F0';
-                    ctx.font = `400 ${subFontSize}px ${WATERMARK_CONFIG.fontFamily}`;
-                    ctx.fillText(watermarkSecondary, badgeX + (padding * 0.8) + primWidth, textY);
-                    ctx.restore();
-
-                    // 5. Trigger download of the watermarked canvas
-                    const cleanName = (photoTitle || 'photo').toLowerCase().replace(/[^a-z0-9]/g, '-');
-                    const downloadFilename = `${cleanName}-wildlight-vista.jpg`;
-
-                    const downloadLink = document.createElement('a');
-                    downloadLink.download = downloadFilename;
-                    downloadLink.href = canvas.toDataURL('image/jpeg', 0.94);
-                    document.body.appendChild(downloadLink);
-                    downloadLink.click();
-                    document.body.removeChild(downloadLink);
-
-                    URL.revokeObjectURL(blobUrl);
-
-                    if (buttonElement) {
-                        buttonElement.disabled = false;
-                        buttonElement.innerHTML = originalButtonContent;
-                    }
-                };
-
-                img.src = blobUrl;
-
-            } catch (err) {
-                console.error("Watermark generation error: ", err);
-                // Fallback: If external image server blocks CORS canvas export, direct download
-                const link = document.createElement('a');
-                link.href = imageUrl;
-                link.download = `${(photoTitle || 'photo').toLowerCase().replace(/[^a-z0-9]/g, '-')}-wildlight-vista.jpg`;
-                link.target = '_blank';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                if (buttonElement) {
-                    buttonElement.disabled = false;
-                    buttonElement.innerHTML = originalButtonContent;
-                }
-            }
-        }
-
-        // -------------------------------------------------------------
-        // Lightbox Modal Logic
-        // -------------------------------------------------------------
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxTitle = document.getElementById('lightboxTitle');
-        const lightboxLocation = document.getElementById('lightboxLocation');
-        const metaFocal = document.getElementById('metaFocal');
-        const metaAperture = document.getElementById('metaAperture');
-        const metaShutter = document.getElementById('metaShutter');
-        const metaIso = document.getElementById('metaIso');
-        const lightboxClose = document.getElementById('lightboxClose');
-        const lightboxPrev = document.getElementById('lightboxPrev');
-        const lightboxNext = document.getElementById('lightboxNext');
-        const lightboxDownloadBtn = document.getElementById('lightboxDownloadBtn');
-
-        let currentImageIndex = 0;
-        let visibleGalleryItems = [];
-
-        function updateVisibleItems() {
-            visibleGalleryItems = Array.from(galleryItems).filter(item => !item.classList.contains('hidden'));
-        }
-
-        function openLightbox(index) {
-            updateVisibleItems();
-            if (visibleGalleryItems.length === 0) return;
-
-            currentImageIndex = index;
-            const targetItem = visibleGalleryItems[currentImageIndex];
-            const imgElement = targetItem.querySelector('img');
-
-            lightboxImg.src = imgElement.src;
-            lightboxImg.alt = targetItem.getAttribute('data-title') || 'WildLight Vista';
-            lightboxTitle.textContent = targetItem.getAttribute('data-title') || 'Untitled';
-            lightboxLocation.innerHTML = `<i class="ph-bold ph-map-pin"></i> ${targetItem.getAttribute('data-location') || 'Wilderness'}`;
-            
-            metaFocal.textContent = targetItem.getAttribute('data-focal') || '--mm';
-            metaAperture.textContent = targetItem.getAttribute('data-aperture') || 'f/--';
-            metaShutter.textContent = targetItem.getAttribute('data-shutter') || '1/--s';
-            metaIso.textContent = `ISO ${targetItem.getAttribute('data-iso') || '--'}`;
-
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function showNextImage() {
-            updateVisibleItems();
-            currentImageIndex = (currentImageIndex + 1) % visibleGalleryItems.length;
-            openLightbox(currentImageIndex);
-        }
-
-        function showPrevImage() {
-            updateVisibleItems();
-            currentImageIndex = (currentImageIndex - 1 + visibleGalleryItems.length) % visibleGalleryItems.length;
-            openLightbox(currentImageIndex);
-        }
-
-        // Attach Click to Cards (excluding the quick download button)
-        galleryItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                // If quick download was tapped, skip opening lightbox
-                if (e.target.closest('.quick-download-btn')) {
-                    e.stopPropagation();
-                    const btn = e.target.closest('.quick-download-btn');
-                    const img = item.querySelector('img');
-                    const title = item.getAttribute('data-title');
-                    downloadImageWithWatermark(img.src, title, btn);
-                    return;
-                }
-
-                updateVisibleItems();
-                const index = visibleGalleryItems.indexOf(item);
-                if (index !== -1) {
-                    openLightbox(index);
-                }
-            });
-        });
-
-        // Lightbox Download Button Click
-        lightboxDownloadBtn.addEventListener('click', () => {
-            const targetItem = visibleGalleryItems[currentImageIndex];
-            if (!targetItem) return;
-            const img = targetItem.querySelector('img');
-            const title = targetItem.getAttribute('data-title');
-            downloadImageWithWatermark(img.src, title, lightboxDownloadBtn);
-        });
-
-        lightboxClose.addEventListener('click', closeLightbox);
-        lightboxNext.addEventListener('click', showNextImage);
-        lightboxPrev.addEventListener('click', showPrevImage);
-
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (!lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') showNextImage();
-            if (e.key === 'ArrowLeft') showPrevImage();
-        });
-
-        // -------------------------------------------------------------
-        // Email Contact Form Submission via AJAX (fetch)
+        // Contact Form Submission via AJAX (fetch)
         // -------------------------------------------------------------
         const contactForm = document.getElementById('portfolioContactForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -1030,7 +1003,7 @@
                 }
             } catch (error) {
                 formStatus.className = 'text-center text-xs p-3.5 rounded-xl bg-rose-950/80 text-rose-300 border border-rose-500/50 block';
-                formStatus.innerHTML = '<i class="ph-bold ph-warning-circle text-base align-middle mr-1.5"></i> Message failed to send. Please check the email setting in index.html or reach out via direct email.';
+                formStatus.innerHTML = '<i class="ph-bold ph-warning-circle text-base align-middle mr-1.5"></i> Message failed to send. Please check your action email in index.html or reach out via direct email.';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
