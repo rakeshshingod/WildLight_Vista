@@ -169,13 +169,23 @@
     <!-- ========================================================================= -->
     <!-- HERO SECTION                                                              -->
     <!-- ========================================================================= -->
-    <section class="relative min-h-[85vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+    <section class="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+        <!-- Background Hero Image with subtle zoom & dark gradient overlays -->
         <div class="absolute inset-0 -z-10 bg-brand-darker">
             <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80" 
-                 alt="Wilderness mountain horizon" 
-                 class="w-full h-full object-cover object-center opacity-30 scale-105">
-            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/80 to-brand-dark/40"></div>
+                 alt="Moody mountain lake landscape" 
+                 class="w-full h-full object-cover object-center opacity-40 scale-105 animate-pulse duration-10000"
+                 style="animation-duration: 25s;">
+            <!-- Dark Vignette / Gradient overlays -->
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/70 to-brand-dark/40"></div>
+            <div class="absolute inset-0 bg-radial from-transparent to-brand-dark/80"></div>
         </div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-brand-gold text-xs font-semibold tracking-wider uppercase">
+                <span class="w-2 h-2 rounded-full bg-brand-gold animate-ping"></span>
+                Fine Art Outdoor Photography
+            </div>
 
             <h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-white tracking-tight leading-[1.1]">
                 Witness Nature's <br>
@@ -184,20 +194,27 @@
                 </span>
             </h1>
 
-            <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+            <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
                 Capturing the fleeting geometry of mist, golden mountain sunsets, and raw wildlife encounters across the world's most remote landscapes.
             </p>
 
+            <!-- Call to Actions -->
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <a href="#work" onclick="showFolderView()" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-brand-goldHover text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-folder-open text-base"></i>
-                    <span>Browse Albums</span>
+                <a href="#gallery" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-amber-400 text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                    <span>Explore Gallery</span>
+                    <i class="ph-bold ph-arrow-down"></i>
                 </a>
                 <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-white font-medium text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2">
-                    <i class="ph-bold ph-paper-plane-tilt text-base"></i>
                     <span>Get In Touch</span>
+                    <i class="ph-bold ph-paper-plane-tilt"></i>
                 </a>
             </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-slate-500 flex flex-col items-center gap-1">
+            <span class="text-[10px] uppercase tracking-widest">Scroll</span>
+            <i class="ph-bold ph-caret-down animate-bounce text-sm"></i>
         </div>
     </section>
 
