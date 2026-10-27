@@ -1,1964 +1,1039 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Happy Birthday Butku 💖</title>
-  <!-- Google Fonts: Elegant, Romantic & Handwritten -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Canvas Confetti Library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-  <style>
-    /* ==========================================================================
-       1. GLOBAL THEME, TOKENS & RESPONSIVE FOUNDATION
-       ========================================================================== */
-    :root {
-      --rose-gold: #e07a86;
-      --soft-rose: #f43f5e;
-      --rose-light: #fff0f3;
-      --peach: #fed7aa;
-      --champagne: #fef3c7;
-      --lavender: #f3e8ff;
-      --gold: #f59e0b;
-      --glass-bg: rgba(255, 255, 255, 0.78);
-      --glass-border: rgba(255, 255, 255, 0.85);
-      --glass-shadow: 0 20px 45px -10px rgba(224, 122, 134, 0.22);
-      --text-main: #34282c;
-      --text-sub: #6e5d63;
-      --accent-glow: 0 0 25px rgba(244, 63, 94, 0.35);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
-
-    html, body {
-      width: 100%;
-      overflow-x: hidden;
-    }
-
-    body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #fff5f6 0%, #fff0f5 35%, #fff7ed 70%, #fdf4ff 100%);
-      color: var(--text-main);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-
-    /* Interactive Background Canvas for floating stars and smoke */
-    #fx-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Fixed Glass Navigation & Floating Music Bar */
-    .top-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 0.85rem 1.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 50;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      background: rgba(255, 255, 255, 0.65);
-      border-bottom: 1px solid rgba(244, 63, 94, 0.12);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    }
-
-    .brand-logo {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #f43f5e, #fb7185, #d946ef);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .audio-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .music-pill-btn {
-      background: white;
-      border: 1px solid rgba(244, 63, 94, 0.25);
-      color: var(--soft-rose);
-      padding: 0.5rem 1.1rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.12);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .music-pill-btn:hover {
-      transform: translateY(-2px);
-      background: var(--rose-light);
-      box-shadow: 0 8px 18px rgba(244, 63, 94, 0.2);
-    }
-
-    .music-pill-btn.playing {
-      background: linear-gradient(135deg, #f43f5e, #ec4899);
-      color: white;
-      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.35);
-    }
-
-    .music-waves {
-      display: inline-flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 12px;
-    }
-
-    .music-waves span {
-      width: 2px;
-      height: 100%;
-      background: currentColor;
-      border-radius: 2px;
-      animation: soundWave 1s infinite ease-in-out;
-    }
-
-    .music-waves span:nth-child(2) { animation-delay: 0.2s; height: 60%; }
-    .music-waves span:nth-child(3) { animation-delay: 0.4s; height: 80%; }
-
-    @keyframes soundWave {
-      0%, 100% { transform: scaleY(0.3); }
-      50% { transform: scaleY(1); }
-    }
-
-    /* Content Layout Container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 5.5rem 1.25rem 4rem 1.25rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    /* Glass Cards */
-    .stage-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1.5px solid var(--glass-border);
-      border-radius: 30px;
-      padding: 2.75rem 2rem;
-      margin-bottom: 3.5rem;
-      box-shadow: var(--glass-shadow);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
-    }
-
-    .stage-card:hover {
-      box-shadow: 0 25px 55px -10px rgba(244, 63, 94, 0.28);
-    }
-
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.4rem 1.1rem;
-      border-radius: 50px;
-      background: linear-gradient(135deg, rgba(254, 205, 211, 0.6), rgba(252, 231, 243, 0.8));
-      color: var(--soft-rose);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 1.2rem;
-      border: 1px solid rgba(244, 63, 94, 0.15);
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', Georgia, serif;
-      color: var(--text-main);
-      line-height: 1.25;
-    }
-
-    .highlight-name {
-      font-family: 'Dancing Script', cursive;
-      color: var(--soft-rose);
-      font-size: 3.2rem;
-      display: block;
-      margin-top: 0.2rem;
-      text-shadow: 2px 2px 10px rgba(244, 63, 94, 0.15);
-    }
-
-    p.stage-subtitle {
-      color: var(--text-sub);
-      font-size: 1.1rem;
-      line-height: 1.75;
-      max-width: 620px;
-      margin: 1.25rem auto 1.75rem auto;
-      font-weight: 400;
-    }
-
-    /* Buttons */
-    .btn-action {
-      background: linear-gradient(135deg, #f43f5e 0%, #fb7185 50%, #fda4af 100%);
-      color: #fff;
-      border: none;
-      padding: 0.95rem 2.2rem;
-      border-radius: 50px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: 0 10px 28px rgba(244, 63, 94, 0.38);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      text-decoration: none;
-    }
-
-    .btn-action:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 16px 32px rgba(244, 63, 94, 0.48);
-      color: white;
-    }
-
-    .btn-action:active {
-      transform: translateY(0) scale(0.98);
-    }
-
-    .btn-action:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--soft-rose);
-      border: 1.5px solid rgba(244, 63, 94, 0.2);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-    }
-
-    .btn-secondary:hover {
-      background: var(--rose-light);
-      border-color: var(--soft-rose);
-    }
-
-    /* ==========================================================================
-       2. REVOLUTIONARY CAKE & CANDLE INTERACTION STYLES
-       ========================================================================== */
-    .stage-interactive-area {
-      position: relative;
-      margin: 2rem auto;
-      max-width: 440px;
-      min-height: 380px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Cake 3D Staged Perspective */
-    .cake-stage {
-      position: relative;
-      width: 290px;
-      height: 250px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      touch-action: none;
-    }
-
-    /* Golden Plate */
-    .cake-base-dish {
-      position: absolute;
-      bottom: -6px;
-      width: 310px;
-      height: 18px;
-      background: linear-gradient(90deg, #fef08a 0%, #fbbf24 50%, #d97706 100%);
-      border-radius: 50%;
-      box-shadow: 0 14px 25px rgba(217, 119, 6, 0.3), 0 4px 8px rgba(0, 0, 0, 0.1);
-      z-index: 1;
-    }
-
-    /* Cake Tiers with Frosting Texture */
-    .cake-tier {
-      position: relative;
-      border-radius: 18px 18px 12px 12px;
-      box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.08), 0 8px 16px rgba(244, 63, 94, 0.14);
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      overflow: hidden;
-    }
-
-    /* Decorative Cream Drips on Top of Each Tier */
-    .cake-tier::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 18px;
-      background: radial-gradient(circle at 10px 0, #ffffff 10px, transparent 11px) repeat-x;
-      background-size: 20px 20px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      z-index: 5;
-    }
-
-    /* Bottom Tier */
-    .tier-1 {
-      width: 240px;
-      height: 78px;
-      background: linear-gradient(180deg, #fbcfe8 0%, #f472b6 100%);
-      z-index: 2;
-      margin-bottom: 8px;
-    }
-
-    /* Middle Tier */
-    .tier-2 {
-      width: 180px;
-      height: 64px;
-      background: linear-gradient(180deg, #fef08a 0%, #facc15 100%);
-      z-index: 3;
-    }
-
-    /* Top Tier */
-    .tier-3 {
-      width: 125px;
-      height: 52px;
-      background: linear-gradient(180deg, #fda4af 0%, #fb7185 100%);
-      z-index: 4;
-    }
-
-    /* Strawberries & Pearl Candies on cake */
-    .pearl-decorations {
-      position: absolute;
-      top: 6px;
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      z-index: 6;
-    }
-
-    .pearl {
-      width: 9px;
-      height: 9px;
-      background: #fff;
-      border-radius: 50%;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-
-    /* Candle Configuration */
-    .candle-group {
-      position: absolute;
-      top: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      gap: 16px;
-    }
-
-    .candle {
-      position: relative;
-      width: 12px;
-      height: 44px;
-      background: repeating-linear-gradient(
-        -45deg,
-        #ffffff,
-        #ffffff 5px,
-        #f43f5e 5px,
-        #f43f5e 10px
-      );
-      border-radius: 6px 6px 2px 2px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-      cursor: pointer;
-    }
-
-    .candle-wick {
-      position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 2px;
-      height: 7px;
-      background: #475569;
-    }
-
-    /* Glowing Animated Flame */
-    .flame {
-      position: absolute;
-      top: -26px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 15px;
-      height: 25px;
-      background: radial-gradient(ellipse at bottom, #ffffff 0%, #fef08a 35%, #f97316 75%, transparent 100%);
-      border-radius: 50% 50% 35% 35% / 60% 60% 40% 40%;
-      filter: drop-shadow(0 0 10px #f59e0b) drop-shadow(0 0 18px #ef4444);
-      animation: flameWiggle 1.2s infinite alternate ease-in-out;
-      transform-origin: 50% 90%;
-      transition: all 0.4s ease-out;
-    }
-
-    @keyframes flameWiggle {
-      0% { transform: translateX(-50%) rotate(-3deg) scale(1, 1); }
-      50% { transform: translateX(-50%) rotate(3deg) scale(1.06, 0.96); }
-      100% { transform: translateX(-50%) rotate(-1deg) scale(0.97, 1.04); }
-    }
-
-    .flame.extinguished {
-      opacity: 0 !important;
-      transform: translateX(-50%) scale(0.1) !important;
-      pointer-events: none;
-    }
-
-    /* Microphone Breath Detector Visual Ring */
-    .mic-indicator-wrap {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(254, 226, 226, 0.7);
-      border: 1px solid rgba(244, 63, 94, 0.25);
-      padding: 0.4rem 0.9rem;
-      border-radius: 30px;
-      margin-top: 1rem;
-      font-size: 0.88rem;
-      color: #9f1239;
-    }
-
-    .mic-live-pulse {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 8px #22c55e;
-      animation: pulseGreen 1.5s infinite;
-    }
-
-    @keyframes pulseGreen {
-      0%, 100% { transform: scale(0.9); opacity: 0.8; }
-      50% { transform: scale(1.3); opacity: 1; }
-    }
-
-    /* ==========================================================================
-       3. UNIQUE CAKE SLICING & CUT INTERACTION
-       ========================================================================== */
-    .knife-tool {
-      position: absolute;
-      top: -20px;
-      right: 15px;
-      font-size: 2.8rem;
-      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
-      cursor: grab;
-      z-index: 40;
-      transition: transform 0.15s ease-out;
-      display: none;
-      animation: knifeBounce 1.8s infinite ease-in-out;
-      pointer-events: auto;
-    }
-
-    .knife-tool:active {
-      cursor: grabbing;
-    }
-
-    @keyframes knifeBounce {
-      0%, 100% { transform: translateY(0) rotate(-25deg); }
-      50% { transform: translateY(-8px) rotate(-15deg); }
-    }
-
-    /* Cake Cut Animation line */
-    .cake-cut-path {
-      position: absolute;
-      top: 40px;
-      left: 50%;
-      width: 3px;
-      height: 200px;
-      background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.85), transparent);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.9), 0 0 20px rgba(244, 63, 94, 0.8);
-      transform: scaleY(0);
-      transform-origin: top;
-      transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-      z-index: 25;
-      pointer-events: none;
-    }
-
-    /* Sliced piece separating */
-    .cake-slice-piece {
-      position: absolute;
-      bottom: 20px;
-      right: -80px;
-      width: 80px;
-      height: 80px;
-      opacity: 0;
-      transform: translateX(40px) rotate(15deg);
-      transition: all 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      z-index: 30;
-      pointer-events: none;
-    }
-
-    .cake-slice-piece.served {
-      opacity: 1;
-      transform: translateX(0) rotate(0deg);
-    }
-
-    .slice-plate {
-      width: 90px;
-      height: 12px;
-      background: #fef08a;
-      border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      position: absolute;
-      bottom: 0;
-      left: -5px;
-    }
-
-    .slice-wedge {
-      width: 0;
-      height: 0;
-      border-left: 36px solid transparent;
-      border-right: 36px solid transparent;
-      border-bottom: 50px solid #f472b6;
-      position: absolute;
-      bottom: 10px;
-      left: 4px;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.15));
-    }
-
-    .slice-strawberry {
-      position: absolute;
-      top: -8px;
-      left: 30px;
-      font-size: 1.2rem;
-    }
-
-    .slice-guide-banner {
-      background: rgba(254, 242, 242, 0.9);
-      border: 1px dashed var(--soft-rose);
-      color: var(--soft-rose);
-      padding: 0.65rem 1.2rem;
-      border-radius: 50px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-top: 1.2rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      animation: pulseGuide 2s infinite;
-    }
-
-    @keyframes pulseGuide {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-
-    /* ==========================================================================
-       4. MAGICAL WISH BOTTLE & EMAIL DISPATCH
-       ========================================================================== */
-    .wish-container {
-      max-width: 580px;
-      margin: 1.5rem auto 0 auto;
-      text-align: left;
-    }
-
-    .star-wish-box {
-      background: rgba(255, 255, 255, 0.92);
-      border: 2px solid rgba(244, 63, 94, 0.25);
-      border-radius: 24px;
-      padding: 1.75rem;
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.03), 0 10px 25px rgba(244, 63, 94, 0.08);
-      position: relative;
-    }
-
-    .star-wish-box textarea {
-      width: 100%;
-      min-height: 130px;
-      border: 1px solid rgba(244, 63, 94, 0.2);
-      border-radius: 16px;
-      padding: 1rem 1.2rem;
-      font-family: inherit;
-      font-size: 1.05rem;
-      color: var(--text-main);
-      background: #fff;
-      outline: none;
-      resize: vertical;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-
-    .star-wish-box textarea:focus {
-      border-color: var(--soft-rose);
-      box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.15);
-    }
-
-    .wish-helper-text {
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .wish-status-badge {
-      display: none;
-      margin-top: 1.2rem;
-      padding: 1.1rem 1.3rem;
-      border-radius: 16px;
-      font-size: 0.95rem;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .wish-status-badge.success {
-      display: block;
-      background: #ecfdf5;
-      color: #065f46;
-      border: 1.5px solid #a7f3d0;
-    }
-
-    /* Shooting Star Animation for Wish */
-    .shooting-star-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 99;
-      display: none;
-    }
-
-    .shooting-star-layer.active {
-      display: block;
-    }
-
-    .shooting-star {
-      position: absolute;
-      width: 120px;
-      height: 2px;
-      background: linear-gradient(90deg, #fff, rgba(254, 240, 138, 0.8), transparent);
-      box-shadow: 0 0 15px #fef08a;
-      transform: rotate(-35deg);
-      animation: shootAcross 1.4s ease-out forwards;
-    }
-
-    @keyframes shootAcross {
-      0% { top: 10%; right: 10%; width: 0; opacity: 1; }
-      50% { width: 180px; opacity: 1; }
-      100% { top: 70%; right: 90%; width: 0; opacity: 0; }
-    }
-
-    /* ==========================================================================
-       5. 3D FLIPPABLE POLAROID MEMORY CARDS
-       ========================================================================== */
-    .polaroid-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-      padding: 0.5rem;
-      perspective: 1000px;
-    }
-
-    .polaroid-card {
-      background: transparent;
-      height: 340px;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-
-    .polaroid-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
-      border-radius: 16px;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
-    }
-
-    .polaroid-card:hover .polaroid-inner {
-      transform: translateY(-8px);
-    }
-
-    .polaroid-card.flipped .polaroid-inner {
-      transform: rotateY(180deg) translateY(-8px);
-    }
-
-    .polaroid-front, .polaroid-back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      border-radius: 16px;
-      background: #ffffff;
-      padding: 1rem 1rem 1.4rem 1rem;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-    }
-
-    .polaroid-front-img {
-      width: 100%;
-      height: 230px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #fdf2f8;
-    }
-
-    .polaroid-front-caption {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.45rem;
-      margin-top: 0.85rem;
-      color: #3b2a2d;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-    }
-
-    .polaroid-back {
-      transform: rotateY(180deg);
-      background: linear-gradient(135deg, #fff1f2 0%, #fffbf0 100%);
-      justify-content: center;
-      align-items: center;
-      padding: 2rem 1.5rem;
-      color: #4b3832;
-    }
-
-    .polaroid-back-text {
-      font-family: 'Caveat', cursive;
-      font-size: 1.55rem;
-      line-height: 1.5;
-    }
-
-    .flip-indicator-hint {
-      font-size: 0.75rem;
-      color: var(--soft-rose);
-      margin-top: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 600;
-    }
-
-    /* Lightbox Modal */
-    .lightbox-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(15, 10, 12, 0.88);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 120;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      padding: 1.5rem;
-    }
-
-    .lightbox-modal.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .lightbox-box {
-      max-width: 90%;
-      max-height: 85%;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
-      background: white;
-      padding: 12px;
-      position: relative;
-    }
-
-    .lightbox-box img {
-      width: 100%;
-      height: 100%;
-      max-height: 75vh;
-      object-fit: contain;
-      border-radius: 14px;
-      display: block;
-    }
-
-    .lightbox-close-btn {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.55);
-      color: white;
-      border: none;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    /* ==========================================================================
-       6. HEARTFELT LOVE LETTER CARD
-       ========================================================================== */
-    .letter-card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 2.5rem 2rem;
-      border: 1px solid rgba(244, 63, 94, 0.15);
-      box-shadow: 0 15px 35px rgba(244, 63, 94, 0.07);
-      text-align: left;
-      position: relative;
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-
-    .letter-card::before {
-      content: '“';
-      position: absolute;
-      top: 10px;
-      left: 20px;
-      font-size: 6rem;
-      color: rgba(244, 63, 94, 0.08);
-      line-height: 1;
-      font-family: Georgia, serif;
-    }
-
-    .letter-body {
-      font-size: 1.15rem;
-      line-height: 2;
-      color: #3f2e33;
-      position: relative;
-      z-index: 2;
-    }
-
-    .letter-signature {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.1rem;
-      color: var(--soft-rose);
-      margin-top: 1.75rem;
-      text-align: right;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 3rem 1rem 4rem 1rem;
-      color: var(--text-sub);
-      font-size: 0.95rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .heart-beat-icon {
-      color: var(--soft-rose);
-      display: inline-block;
-      animation: heartPulse 1.2s infinite;
-    }
-
-    @keyframes heartPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-    }
-
-    /* ==========================================================================
-       MOBILE RESPONSIVE OPTIMIZATIONS
-       ========================================================================== */
-    @media (max-width: 680px) {
-      .top-nav {
-        padding: 0.65rem 1rem;
-      }
-      .brand-logo {
-        font-size: 1.45rem;
-      }
-      .music-pill-btn {
-        padding: 0.45rem 0.85rem;
-        font-size: 0.78rem;
-      }
-      .container {
-        padding: 4.6rem 0.85rem 2.5rem 0.85rem;
-      }
-      .stage-card {
-        padding: 1.8rem 1rem;
-        border-radius: 22px;
-        margin-bottom: 2.2rem;
-      }
-      h1 {
-        font-size: 1.6rem;
-      }
-      h2 {
-        font-size: 1.45rem;
-      }
-      .highlight-name {
-        font-size: 2.3rem;
-        line-height: 1.2;
-      }
-      p.stage-subtitle {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin: 0.9rem auto 1.4rem auto;
-      }
-      .stage-interactive-area {
-        margin: 1.2rem auto;
-        min-height: 330px;
-        max-width: 100%;
-      }
-      .cake-stage {
-        transform: scale(0.85);
-        transform-origin: bottom center;
-      }
-      .knife-tool {
-        font-size: 2.4rem;
-        top: -15px;
-        right: 5px;
-      }
-      .slice-guide-banner {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.9rem;
-      }
-      .star-wish-box {
-        padding: 1.25rem 1rem;
-        border-radius: 18px;
-      }
-      .star-wish-box textarea {
-        font-size: 16px; /* Prevents auto-zoom on mobile browsers */
-        padding: 0.8rem 0.9rem;
-        min-height: 110px;
-      }
-      .polaroid-grid {
-        grid-template-columns: 1fr;
-        max-width: 290px;
-        margin-left: auto;
-        margin-right: auto;
-        gap: 1.5rem;
-        padding: 0;
-      }
-      .polaroid-card {
-        height: 330px;
-      }
-      .polaroid-front-img {
-        height: 220px;
-      }
-      .polaroid-back-text {
-        font-size: 1.35rem;
-        line-height: 1.45;
-      }
-      .letter-card {
-        padding: 1.8rem 1.2rem;
-        border-radius: 18px;
-      }
-      .letter-body {
-        font-size: 0.98rem;
-        line-height: 1.8;
-      }
-      .letter-signature {
-        font-size: 1.7rem;
-      }
-      .btn-action {
-        width: 100%;
-        padding: 0.85rem 1.4rem;
-        font-size: 0.98rem;
-      }
-      .lightbox-modal {
-        padding: 0.75rem;
-      }
-      .lightbox-box {
-        max-width: 95%;
-        padding: 8px;
-        border-radius: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WildLight Vista | Nature & Wildlife Photography</title>
+
+<!-- Meta tags for SEO & Social Sharing -->
+<meta name="description" content="WildLight Vista - Fine art nature, wildlife, and wilderness photography portfolio.">
+<meta name="Rakeshkumar Shingod" content="WildLight Vista">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+colors: {
+brand: {
+gold: '#E5A93B',
+goldHover: '#d49629',
+dark: '#0B0F12',
+darker: '#06080A',
+card: '#121820',
+cardHover: '#18222d',
+border: '#1E293B'
+}
+},
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+serif: ['Playfair Display', 'serif']
+}
+}
+}
+}
+</script>
+
+<!-- Google Fonts: Inter & Playfair Display -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<!-- Phosphor Icons CDN for crisp photography UI icons -->
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<style>
+/* Smooth scrolling and minimalist dark scrollbars */
+::-webkit-scrollbar {
+width: 8px;
+}
+::-webkit-scrollbar-track {
+background: #0B0F12;
+}
+::-webkit-scrollbar-thumb {
+background: #1f2b38;
+border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+background: #E5A93B;
+}
+
+/* Glassmorphism styling */
+.glass-nav {
+background: rgba(11, 15, 18, 0.88);
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
+}
+.glass-card {
+background: rgba(18, 24, 32, 0.75);
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px);
+}
+
+/* Smooth album & image card transitions */
+.folder-card, .photo-card {
+transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.folder-card:hover, .photo-card:hover {
+transform: translateY(-6px);
+box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.8);
+}
+
+/* Lightbox modal transition */
+#lightbox {
+transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+#lightbox.active {
+opacity: 1;
+visibility: visible;
+}
+#lightbox:not(.active) {
+opacity: 0;
+visibility: hidden;
+pointer-events: none;
+}
+
+/* View switching crossfade animation */
+.fade-in {
+animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
-<body>
 
-  <!-- Background Particle & Smoke Canvas -->
-  <canvas id="fx-canvas"></canvas>
+<body class="bg-brand-dark text-slate-200 font-sans selection:bg-brand-gold selection:text-black min-h-screen flex flex-col justify-between">
 
-  <!-- Shooting Star Animation Overlay -->
-  <div id="starLayer" class="shooting-star-layer">
-    <div class="shooting-star"></div>
-  </div>
+<!-- ========================================================================= -->
+<!-- HEADER & NAVIGATION                                                      -->
+<!-- ========================================================================= -->
+<header class="fixed top-0 left-0 w-full z-40 glass-nav border-b border-brand-border/60 transition-all duration-300">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
-  <!-- Top Glass Navigation with Polyphonic Music Box -->
-  <header class="top-nav">
-    <div class="brand-logo">
-      <span>Diya</span>
-      <span style="font-size: 1.1rem; opacity: 0.85;">(Butku)</span>
-      <span style="font-size: 1.1rem;">🌸</span>
-    </div>
+<!-- ------------------------------------------------------------- -->
+<!-- LOGO AREA                                                     -->
+<!-- ------------------------------------------------------------- -->
+<!-- 
+               ==============================================================
+               WHERE TO INCLUDE YOUR LOGO:
+               To use an image file (e.g., logo.png or logo.svg):
+               1. Place your logo image in your repo (e.g. "images/logo.png").
+               2. Replace the <a> tag inner content below with:
+               ==============================================================
+           -->
+<a href="#" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-gold rounded-lg p-1">   
+<div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-gold to-amber-200 flex items-center justify-center text-black font-bold shadow-lg shadow-amber-500/10 group-hover:scale-105 transition-transform duration-300">
+<i class="ph-bold ph-camera text-xl"></i>
+</div>
+<div class="flex flex-col">
+<span class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-white group-hover:text-brand-gold transition-colors">
+WildLight<span class="text-brand-gold font-light">Vista</span>
+</span>
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold -mt-1">Fine Art Photography</span>
+</div>
+</a>
 
-    <div class="audio-controls">
-      <button id="musicToggleBtn" class="music-pill-btn" aria-label="Play Birthday Melodies">
-        <i class="fa-solid fa-music"></i>
-        <span id="musicBtnLabel">Birthday Tune</span>
-        <div class="music-waves" id="musicVisualizer" style="display: none;">
-          <span></span><span></span><span></span>
+<!-- Desktop Nav Links -->
+<nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+<a href="#about" class="text-slate-300 hover:text-brand-gold transition-colors">About</a>
+<a href="#contact" class="text-slate-300 hover:text-brand-gold transition-colors">Contact</a>
+<a href="#work" onclick="showFolderView()" class="px-4 py-2 rounded-full border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black transition-all duration-300 text-xs uppercase tracking-wider font-semibold">
+Explore Collections
+</a>
+</nav>
+
+<!-- Mobile Hamburger Button -->
+<button id="mobileMenuBtn" aria-label="Toggle Mobile Menu" class="md:hidden p-2 text-slate-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-gold">
+<i class="ph-bold ph-list text-2xl" id="menuIcon"></i>
+</button>
+</div>
+
+<!-- Mobile Drawer Navigation -->
+<div id="mobileMenu" class="hidden md:hidden glass-nav border-b border-brand-border px-6 py-6 space-y-4">
+<a href="#work" onclick="showFolderView()" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">Explore Collection</a>
+<a href="#about" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">About the Artist</a>
+<a href="#contact" class="mobile-link block text-base font-medium text-slate-200 hover:text-brand-gold">Contact</a>
+<div class="pt-2">
+<a href="#contact" class="mobile-link block text-center w-full py-2.5 rounded-lg bg-brand-gold text-black font-semibold text-sm">
+Get in Touch
+</a>
+</div>
+</div>
+</header>
+
+
+<!-- ========================================================================= -->
+<!-- HERO SECTION                                                              -->
+<!-- ========================================================================= -->
+    <section class="relative min-h-[85vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+    <section class="relative min-h-[90vh] flex items-center justify-center pt-24 px-4 overflow-hidden">
+        <!-- Background Hero Image with subtle zoom & dark gradient overlays -->
+<div class="absolute inset-0 -z-10 bg-brand-darker">
+<img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80" 
+                 alt="Wilderness mountain horizon" 
+                 class="w-full h-full object-cover object-center opacity-30 scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/80 to-brand-dark/40"></div>
+                 alt="Moody mountain lake landscape" 
+                 class="w-full h-full object-cover object-center opacity-40 scale-105 animate-pulse duration-10000"
+                 style="animation-duration: 25s;">
+            <!-- Dark Vignette / Gradient overlays -->
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/70 to-brand-dark/40"></div>
+            <div class="absolute inset-0 bg-radial from-transparent to-brand-dark/80"></div>
+</div>
+
+        <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 text-brand-gold text-xs font-semibold tracking-wider uppercase">
+                <span class="w-2 h-2 rounded-full bg-brand-gold animate-ping"></span>
+                Fine Art Outdoor Photography
+            </div>
+
+<h1 class="text-4xl sm:text-6xl md:text-7xl font-serif font-bold text-white tracking-tight leading-[1.1]">
+Witness Nature's <br>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-brand-gold to-amber-500">
+Untamed Light
+</span>
+</h1>
+
+            <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+            <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+Capturing the fleeting geometry of mist, golden mountain sunsets, and raw wildlife encounters across the world's most remote landscapes.
+</p>
+
+            <!-- Call to Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="#work" onclick="showFolderView()" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-brand-goldHover text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-folder-open text-base"></i>
+                    <span>Browse Albums</span>
+                <a href="#gallery" class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-brand-gold hover:bg-amber-400 text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                    <span>Explore Gallery</span>
+                    <i class="ph-bold ph-arrow-down"></i>
+</a>
+<a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-700 bg-slate-900/60 hover:bg-slate-800 text-white font-medium text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-paper-plane-tilt text-base"></i>
+<span>Get In Touch</span>
+                    <i class="ph-bold ph-paper-plane-tilt"></i>
+</a>
+</div>
+</div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-slate-500 flex flex-col items-center gap-1">
+            <span class="text-[10px] uppercase tracking-widest">Scroll</span>
+            <i class="ph-bold ph-caret-down animate-bounce text-sm"></i>
         </div>
-      </button>
-    </div>
-  </header>
-
-  <main class="container">
-
-    <!-- ==========================================================================
-         STAGE 1: PERSONALIZED ENCHANTING INTRO
-         CUSTOMIZATION: Edit the text below to include your own memory or words!
-         ========================================================================== -->
-    <section class="stage-card" id="stage-welcome">
-      <div class="badge-pill">
-        <i class="fa-solid fa-sparkles"></i>
-        <span>Happy Birthday Celebration</span>
-      </div>
-
-      <h1>To The Sweetest Soul,</h1>
-      <span class="highlight-name">Diya (My Cute Friend Butku) 💖</span>
-
-      <p class="stage-subtitle">
-        Today was made to celebrate the purest heart, the softest kindness, and that gentle smile that 
-        makes everything in this world feel warm and bright. You are truly one of a kind.
-      </p>
-
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <button id="startJourneyBtn" class="btn-action">
-          <span>Begin The Surprise</span>
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-        </button>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         STAGE 2: UNIQUE CANDLE BLOW (Microphone Detection + Touch Gesture)
-         ========================================================================== -->
-    <section class="stage-card" id="stage-cake-section">
-      <div class="badge-pill">
-        <i class="fa-solid fa-cake-candles"></i>
-        <span>Interactive Celebration</span>
-      </div>
-
-      <h2>Make A Wish & Blow The Candle!</h2>
-      <p class="stage-subtitle">
-        Close your eyes, think of the happiest wish in your heart. You can <strong>blow gently into your microphone</strong> like a real candle, or swipe across the flame!
-      </p>
-
-      <div class="stage-interactive-area">
-
-        <!-- Slicing Floating Knife -->
-        <div id="knifeTool" class="knife-tool" title="Drag me to cut the cake!">🔪</div>
-
-        <!-- Sliced Piece That Pops Out -->
-        <div id="cakeSlice" class="cake-slice-piece">
-          <div class="slice-strawberry">🍓</div>
-          <div class="slice-wedge"></div>
-          <div class="slice-plate"></div>
-        </div>
-
-        <!-- The 3D CSS Layered Cake -->
-        <div class="cake-stage" id="cakeStage">
-          <!-- Cut Line Indicator -->
-          <div class="cake-cut-path" id="cakeCutPath"></div>
-
-          <!-- Triple Candles with Wick & Flames -->
-          <div class="candle-group">
-            <div class="candle" id="candle-1" onclick="extinguishCandlesManually()">
-              <div class="candle-wick"></div>
-              <div class="flame flame-item"></div>
-            </div>
-            <div class="candle" id="candle-2" onclick="extinguishCandlesManually()">
-              <div class="candle-wick"></div>
-              <div class="flame flame-item"></div>
-            </div>
-            <div class="candle" id="candle-3" onclick="extinguishCandlesManually()">
-              <div class="candle-wick"></div>
-              <div class="flame flame-item"></div>
-            </div>
-          </div>
-
-          <!-- Top Tier with Pearls -->
-          <div class="cake-tier tier-3">
-            <div class="pearl-decorations">
-              <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
-            </div>
-          </div>
-
-          <!-- Middle Tier -->
-          <div class="cake-tier tier-2">
-            <div class="pearl-decorations">
-              <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
-            </div>
-          </div>
-
-          <!-- Bottom Tier -->
-          <div class="cake-tier tier-1">
-            <div class="pearl-decorations">
-              <span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span><span class="pearl"></span>
-            </div>
-          </div>
-
-          <!-- Golden Stand Base -->
-          <div class="cake-base-dish"></div>
-        </div>
-
-        <!-- Microphone Detection Feedback -->
-        <div id="micFeedback" class="mic-indicator-wrap" style="display: none;">
-          <div class="mic-live-pulse"></div>
-          <span id="micStatusText">Microphone listening... blow softly into your phone! 🌬️</span>
-        </div>
-
-        <!-- Slice Guidance Alert Banner -->
-        <div id="sliceGuide" class="slice-guide-banner" style="display: none;">
-          <i class="fa-solid fa-hand-pointer"></i>
-          <span>Now tap or drag the knife down across the cake to slice it! 🍰</span>
-        </div>
-
-      </div>
-
-      <!-- Action Buttons for Candle & Cake -->
-      <div style="display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-        <button id="enableMicBtn" class="btn-action btn-secondary">
-          <i class="fa-solid fa-microphone"></i>
-          <span>Blow via Microphone 🎙️</span>
-        </button>
-
-        <button id="touchBlowBtn" class="btn-action">
-          <i class="fa-solid fa-wind"></i>
-          <span>Blow Candle Out 💨</span>
-        </button>
-
-        <button id="cutCakeBtn" class="btn-action" style="display: none; background: linear-gradient(135deg, #10b981, #059669);">
-          <i class="fa-solid fa-knife"></i>
-          <span>Slice the Cake Now! 🍰</span>
-        </button>
-      </div>
-
-      <div id="cakeNotification" style="margin-top: 1.5rem; font-weight: 600; color: var(--soft-rose); min-height: 24px;"></div>
-    </section>
-
-    <!-- ==========================================================================
-         STAGE 3: THE SECRET WISH BOTTLE (Straight to your email)
-         CUSTOMIZATION TIP:
-         1. Create a free form at https://formspree.io and paste your endpoint below.
-         2. Or simply change the fallback email in the JavaScript constant `CREATOR_EMAIL`.
-         ========================================================================== -->
-    <section class="stage-card" id="stage-wish-section">
-      <div class="badge-pill">
-        <i class="fa-solid fa-envelope-open-text"></i>
-        <span>Direct To My Heart</span>
-      </div>
-
-      <h2>Send A Secret Wish to the Stars</h2>
-      <p class="stage-subtitle">
-        Write down anything you want in this life, Butku: your wildest dream, something you wish for us, 
-        or a little secret. When you tap send, a shooting star will carry it directly into my inbox!
-      </p>
-
-      <div class="wish-container">
-        <div class="star-wish-box">
-          <!-- Invisible iframe to handle submission silently in the background -->
-          <iframe name="silent-target" id="silentTarget" style="display: none;"></iframe>
-
-          <form id="wishForm" action="https://formsubmit.co/shingod.rakeshkumar@gmail.com" method="POST" target="silent-target" autocomplete="off">
-            <!-- FormSubmit hidden configurations -->
-            <input type="hidden" name="_subject" value="A Secret Birthday Wish from Diya (Butku)! 🎂💖">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="Sender" value="Diya (Butku)">
-
-            <label for="wishContent" style="display:block; font-weight: 600; margin-bottom: 0.6rem; color: #4a383d;">
-              ✨ Diya's Heartfelt Wish:
-            </label>
-            <textarea 
-              id="wishContent" 
-              name="Birthday_Wish" 
-              placeholder="My secret wish this year is..." 
-              required></textarea>
-
-            <div class="wish-helper-text">
-              <i class="fa-solid fa-lock" style="color: var(--soft-rose);"></i>
-              <span>This note is encrypted with love and sent only to me.</span>
-            </div>
-
-            <div style="margin-top: 1.4rem;">
-              <button type="submit" id="sendWishBtn" class="btn-action" style="width: 100%;">
-                <i class="fa-solid fa-paper-plane"></i>
-                <span>Send Wish to Universe 🌠</span>
-              </button>
-            </div>
-          </form>
-
-          <div id="wishStatusMessage" class="wish-status-badge"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         STAGE 4: 3D FLIPPABLE POLAROID MEMORY LANE
-         HOW TO ADD DIYA'S PHOTOS:
-         Option 1 (Host locally on GitHub):
-           - In your GitHub repo, create a folder named `images`
-           - Add photos (e.g., `images/diya1.jpg`, `images/diya2.jpg`)
-           - Update the `src=""` attributes below to `images/diya1.jpg`
-         Option 2:
-           - Paste direct links from image hosting or cloud storage.
-         ========================================================================== -->
-    <section class="stage-card" id="stage-memories-section">
-      <div class="badge-pill">
-        <i class="fa-solid fa-images"></i>
-        <span>Memories in Time</span>
-      </div>
-
-      <h2>Our Little Memory Lane</h2>
-      <p class="stage-subtitle">
-        Tap any polaroid picture to flip it and read the secret note written on the back!
-      </p>
-
-      <div class="polaroid-grid">
-
-        <!-- Polaroid Photo 1 -->
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Polaroid Photo 2 -->
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Polaroid Photo 3 -->
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku2.png" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="polaroid-card" onclick="flipPolaroid(this)">
-          <div class="polaroid-inner">
-            <div class="polaroid-front">
-              <!-- Replace this image link with Diya's picture -->
-              <img src="images/Butku1.jpeg" 
-                   alt="My Dearest Butku" 
-                   class="polaroid-front-img" 
-                   onerror="this.src='https://placehold.co/600x600/fff1f2/f43f5e?text=My+Sweet+Butku'">
-              <div class="polaroid-front-caption">
-                <span>My Sweet Friend Butku</span> 🧸
-              </div>
-              <div class="flip-indicator-hint">Tap to flip ↺</div>
-            </div>
-            <div class="polaroid-back">
-              <div class="polaroid-back-text">
-                "Cute, silly, thoughtful, and absolutely irreplaceable. Happy Birthday to my favorite person."
-              </div>
-              <div class="flip-indicator-hint">Tap to flip back</div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         STAGE 5: HEARTFELT LETTER TO DIYA
-         CUSTOMIZATION: Edit the letter below with your personal feelings!
-         ========================================================================== -->
-    <section class="stage-card" id="stage-letter-section">
-      <div class="badge-pill">
-        <i class="fa-solid fa-heart"></i>
-        <span>Words From The Heart</span>
-      </div>
-
-      <div class="letter-card">
-        <div class="letter-body">
-          <p>
-            Dearest Diya,
-          </p>
-          <br>
-          <p>
-            On this special day, I just want you to pause for a second and realize how truly rare and precious you are. 
-            You carry a kindness inside you that doesn't ask for applause—it just heals, comforts, and makes everybody feel at home.
-          </p>
-          <br>
-          <p>
-            Calling you <em>Butku 💖</em> will always be my favorite thing, because behind that sweet name is someone I admire, respect, 
-            and cherish more than words could ever describe. I hope this new chapter of your life brings you deep inner peace, great laughter, 
-            and dreams that come true before you even finish wishing for them.
-          </p>
-          <br>
-          <p>
-            Thank you for being you. Today, tomorrow, and every year ahead—I'm always cheering for your happiness.
-          </p>
-
-          <div class="letter-signature">
-            Forever Yours & Always in your corner 🤍. Glad to have friend like you Butku Penguin 💖 
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Photo Fullscreen Lightbox -->
-  <div id="fullLightbox" class="lightbox-modal" onclick="closeLightbox(event)">
-    <div class="lightbox-box">
-      <button class="lightbox-close-btn" onclick="closeLightbox(event)">&times;</button>
-      <img id="lightboxImg" src="" alt="Enlarged view">
-    </div>
-  </div>
-
-  <!-- Romantic Footer -->
-  <footer>
-    <p>Crafted exclusively for <strong>Diya (Butku)</strong> with endless love. Thank You for being my Friend 💖<i class="fa-solid fa-heart heart-beat-icon"></i></p>
-    <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.7;">May all your birthday wishes come true ✨</p>
-  </footer>
-
-  <!-- ==========================================================================
-       JAVASCRIPT: POLYPHONIC AUDIO SYNTHESIS, PARTICLES, MIC DETECTION & SLICING
-       ========================================================================== -->
-  <script>
-    /* ==========================================================================
-       CONFIGURATIONS: EDIT YOUR EMAIL OR FORMSPREE ID HERE
-       ========================================================================== */
-    // 1. Enter your Formspree endpoint URL here (e.g., 'https://formspree.io/f/mqkrvkpd')
-    // Get free Formspree ID at https://formspree.io
-    /* ==========================================================================
-       CONFIGURATIONS: TARGET GMAIL RECIPIENT
-       ========================================================================== */
-    const TARGET_GMAIL = "shingod.rakeshkumar@gmail.com";
-
-    // 2. Fallback Email (if Formspree is not set up, it triggers a mail client for backup)
-
-    /* ==========================================================================
-       1. POLYPHONIC "HAPPY BIRTHDAY" MUSIC BOX SYNTHESIZER (Pure Web Audio API)
-       ========================================================================== */
-    class PolyphonicMusicBox {
-      constructor() {
-        this.ctx = null;
-        this.isPlaying = false;
-        this.activeNodes = [];
-        this.timeoutIds = [];
-      }
-
-      init() {
-        if (!this.ctx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          this.ctx = new AudioContext();
-        }
-        if (this.ctx.state === 'suspended') {
-          this.ctx.resume();
-        }
-      }
-
-      // Plays a lush music-box bell tone with harmonic overtones
-      playBellTone(freq, time, duration = 1.2, gainPeak = 0.22) {
-        if (!this.ctx) return;
-
-        // Fundamental oscillator
-        const osc1 = this.ctx.createOscillator();
-        const osc2 = this.ctx.createOscillator(); // Soft harmonic octave
-        const gainNode = this.ctx.createGain();
-
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(freq, time);
-
-        osc2.type = 'triangle';
-        osc2.frequency.setValueAtTime(freq * 2, time);
-
-        // Envelope
-        gainNode.gain.setValueAtTime(0.0001, time);
-        gainNode.gain.linearRampToValueAtTime(gainPeak, time + 0.02);
-        gainNode.gain.exponentialRampToValueAtTime(gainPeak * 0.4, time + 0.25);
-        gainNode.gain.exponentialRampToValueAtTime(0.00001, time + duration);
-
-        osc1.connect(gainNode);
-        osc2.connect(gainNode);
-        gainNode.connect(this.ctx.destination);
-
-        osc1.start(time);
-        osc2.start(time);
-        osc1.stop(time + duration);
-        osc2.stop(time + duration);
-      }
-
-      // Procedural Wind / Breath sound effect for blowing out candle
-      playBlowWhoosh() {
-        this.init();
-        const bufferSize = this.ctx.sampleRate * 1.5;
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buffer;
-
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(450, this.ctx.currentTime);
-        filter.Q.setValueAtTime(1.8, this.ctx.currentTime);
-        filter.frequency.linearRampToValueAtTime(150, this.ctx.currentTime + 1.2);
-
-        const gain = this.ctx.createGain();
-        gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.35, this.ctx.currentTime + 0.3);
-        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.4);
-
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(this.ctx.destination);
-
-        noise.start();
-      }
-
-      // Celebratory knife chime effect
-      playCakeCutChime() {
-        this.init();
-        const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5, E5, G5, C6, E6
-        notes.forEach((freq, idx) => {
-          setTimeout(() => {
-            this.playBellTone(freq, this.ctx.currentTime, 1.4, 0.2);
-          }, idx * 90);
-        });
-      }
-
-      // Rich Polyphonic Happy Birthday Score (Melody + Harmony Chords)
-      playSong() {
-        this.init();
-        this.stopSong();
-        this.isPlaying = true;
-
-        const C4 = 261.63, D4 = 293.66, E4 = 329.63, F4 = 349.23, G4 = 392.00, A4 = 440.00, B4 = 493.88, Bb4 = 466.16;
-        const C5 = 523.25, D5 = 587.33, E5 = 659.25, F5 = 698.46;
-        const C3 = 130.81, F3 = 174.61, G3 = 196.00, Bb3 = 233.08;
-
-        // Song timeline: [melodyNote, duration, [chordBassNotes]]
-        const score = [
-          // "Happy Birthday to you"
-          { m: C4, d: 0.35, c: [C3, G3] },
-          { m: C4, d: 0.25, c: [] },
-          { m: D4, d: 0.6,  c: [] },
-          { m: C4, d: 0.6,  c: [C3, E4] },
-          { m: F4, d: 0.6,  c: [F3, A4] },
-          { m: E4, d: 1.1,  c: [C3, G3] },
-
-          // "Happy Birthday to you"
-          { m: C4, d: 0.35, c: [C3, G3] },
-          { m: C4, d: 0.25, c: [] },
-          { m: D4, d: 0.6,  c: [] },
-          { m: C4, d: 0.6,  c: [C3, E4] },
-          { m: G4, d: 0.6,  c: [G3, B4] },
-          { m: F4, d: 1.1,  c: [F3, A4] },
-
-          // "Happy Birthday dear Diya"
-          { m: C4, d: 0.35, c: [F3, C4] },
-          { m: C4, d: 0.25, c: [] },
-          { m: C5, d: 0.6,  c: [C3, E4, G4] },
-          { m: A4, d: 0.6,  c: [F3, C4] },
-          { m: F4, d: 0.6,  c: [D4, F4] },
-          { m: E4, d: 0.6,  c: [C3, G3] },
-          { m: D4, d: 1.0,  c: [Bb3, F4] },
-
-          // "Happy Birthday to you"
-          { m: Bb4, d: 0.35, c: [Bb3, D4] },
-          { m: Bb4, d: 0.25, c: [] },
-          { m: A4,  d: 0.6,  c: [F3, C4] },
-          { m: F4,  d: 0.6,  c: [C3, A4] },
-          { m: G4,  d: 0.6,  c: [G3, D4] },
-          { m: F4,  d: 1.5,  c: [F3, C4, A4, C5] }
-        ];
-
-        let accumulatedTime = this.ctx.currentTime + 0.1;
-        let totalDurationMs = 0;
-
-        score.forEach(item => {
-          const timeout = setTimeout(() => {
-            if (!this.isPlaying) return;
-            const now = this.ctx.currentTime;
-            // Play melody note
-            this.playBellTone(item.m, now, item.d * 1.5, 0.22);
-            // Play harmony chord notes
-            if (item.c && item.c.length > 0) {
-              item.c.forEach(chordNote => {
-                this.playBellTone(chordNote, now, item.d * 2.0, 0.12);
-              });
-            }
-          }, totalDurationMs);
-
-          this.timeoutIds.push(timeout);
-          totalDurationMs += (item.d + 0.18) * 1000;
-        });
-
-        // Loop after complete song
-        const loopTimeout = setTimeout(() => {
-          if (this.isPlaying) {
-            this.playSong();
-          }
-        }, totalDurationMs + 1800);
-        this.timeoutIds.push(loopTimeout);
-      }
-
-      stopSong() {
-        this.isPlaying = false;
-        this.timeoutIds.forEach(id => clearTimeout(id));
-        this.timeoutIds = [];
-      }
-    }
-
-    const musicPlayer = new PolyphonicMusicBox();
-    const musicBtn = document.getElementById('musicToggleBtn');
-    const musicBtnLabel = document.getElementById('musicBtnLabel');
-    const musicVisualizer = document.getElementById('musicVisualizer');
-
-    function toggleMusic() {
-      if (!musicPlayer.isPlaying) {
-        musicPlayer.playSong();
-        musicBtn.classList.add('playing');
-        musicBtnLabel.textContent = "Pause Melody";
-        musicVisualizer.style.display = "inline-flex";
-      } else {
-        musicPlayer.stopSong();
-        musicBtn.classList.remove('playing');
-        musicBtnLabel.textContent = "Birthday Tune";
-        musicVisualizer.style.display = "none";
-      }
-    }
-
-    musicBtn.addEventListener('click', toggleMusic);
-
-    /* ==========================================================================
-       2. CANVAS PARTICLES & RISING SMOKE SIMULATOR
-       ========================================================================== */
-    const canvas = document.getElementById('fx-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let smokeParticles = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Spawn ambient hearts and sparkling dust
-    for (let i = 0; i < 28; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1.5,
-        speedY: -(Math.random() * 0.6 + 0.3),
-        speedX: (Math.random() - 0.5) * 0.4,
-        opacity: Math.random() * 0.7 + 0.2,
-        color: ['#f43f5e', '#fbcfe8', '#fed7aa', '#fde047'][Math.floor(Math.random() * 4)]
-      });
-    }
-
-    function createSmokePuff(x, y) {
-      for (let i = 0; i < 35; i++) {
-        smokeParticles.push({
-          x: x + (Math.random() - 0.5) * 16,
-          y: y,
-          size: Math.random() * 6 + 4,
-          speedY: -(Math.random() * 1.8 + 0.8),
-          speedX: (Math.random() - 0.5) * 1.5,
-          opacity: 0.75,
-          growth: Math.random() * 0.2 + 0.15
-        });
-      }
-    }
-
-    function renderFX() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Render floating ambient sparkles
-      particles.forEach(p => {
-        p.y += p.speedY;
-        p.x += p.speedX;
-        if (p.y < -10) {
-          p.y = canvas.height + 10;
-          p.x = Math.random() * canvas.width;
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = p.opacity;
-        ctx.fill();
-      });
-
-      // Render realistic rising smoke from extinguished candle
-      for (let i = smokeParticles.length - 1; i >= 0; i--) {
-        const s = smokeParticles[i];
-        s.y += s.speedY;
-        s.x += s.speedX;
-        s.size += s.growth;
-        s.opacity -= 0.009;
-
-        if (s.opacity <= 0) {
-          smokeParticles.splice(i, 1);
-          continue;
-        }
-
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 180, 190, ${s.opacity})`;
-        ctx.fill();
-      }
-
-      ctx.globalAlpha = 1.0;
-      requestAnimationFrame(renderFX);
-    }
-    renderFX();
-
-    /* ==========================================================================
-       3. CANDLE BLOW INTERACTION (Microphone Detection + Gesture Fallback)
-       ========================================================================== */
-    const flames = document.querySelectorAll('.flame-item');
-    const enableMicBtn = document.getElementById('enableMicBtn');
-    const touchBlowBtn = document.getElementById('touchBlowBtn');
-    const micFeedback = document.getElementById('micFeedback');
-    const micStatusText = document.getElementById('micStatusText');
-    const cutCakeBtn = document.getElementById('cutCakeBtn');
-    const cakeNotification = document.getElementById('cakeNotification');
-    const knifeTool = document.getElementById('knifeTool');
-    const sliceGuide = document.getElementById('sliceGuide');
-
-    let candlesExtinguished = false;
-    let micStream = null;
-    let audioAnalyzer = null;
-
-    function triggerConfettiParty() {
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 80,
-          spread: 80,
-          origin: { y: 0.65 },
-          colors: ['#f43f5e', '#fb7185', '#fed7aa', '#facc15', '#a855f7']
-        });
-      }
-    }
-
-    // Extinguishes all candle flames with smoke and sound
-    function extinguishCandles() {
-      if (candlesExtinguished) return;
-      candlesExtinguished = true;
-
-      musicPlayer.playBlowWhoosh();
-
-      // Spawn smoke at candle positions
-      flames.forEach(flame => {
-        flame.classList.add('extinguished');
-        const rect = flame.getBoundingClientRect();
-        createSmokePuff(rect.left + rect.width / 2, rect.top);
-      });
-
-      // Close microphone if open
-      if (micStream) {
-        micStream.getTracks().forEach(track => track.stop());
-      }
-      micFeedback.style.display = 'none';
-
-      // Update button states
-      touchBlowBtn.style.display = 'none';
-      enableMicBtn.style.display = 'none';
-
-      cakeNotification.innerHTML = "✨ Your lovely wish has been released to the universe! Now, grab the knife to slice the cake!";
-      
-      // Reveal knife and instructions
-      knifeTool.style.display = 'block';
-      sliceGuide.style.display = 'inline-flex';
-      cutCakeBtn.style.display = 'inline-flex';
-
-      triggerConfettiParty();
-
-      // Start music automatically if not playing
-      if (!musicPlayer.isPlaying) {
-        toggleMusic();
-      }
-    }
-
-    function extinguishCandlesManually() {
-      extinguishCandles();
-    }
-
-    touchBlowBtn.addEventListener('click', extinguishCandles);
-
-    // Real Microphone Breath Detection API
-    enableMicBtn.addEventListener('click', async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-        micStream = stream;
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const micCtx = new AudioContext();
-        const source = micCtx.createMediaStreamSource(stream);
-        audioAnalyzer = micCtx.createAnalyser();
-        audioAnalyzer.fftSize = 256;
-        source.connect(audioAnalyzer);
-
-        micFeedback.style.display = 'inline-flex';
-        enableMicBtn.disabled = true;
-        enableMicBtn.innerHTML = `<i class="fa-solid fa-check"></i> <span>Mic Active</span>`;
-
-        const dataArray = new Uint8Array(audioAnalyzer.frequencyBinCount);
-
-        function checkBreath() {
-          if (candlesExtinguished) return;
-          audioAnalyzer.getByteFrequencyData(dataArray);
-
-          // Calculate average energy
-          let sum = 0;
-          for (let i = 0; i < dataArray.length; i++) {
-            sum += dataArray[i];
-          }
-          let average = sum / dataArray.length;
-
-          // Detect sudden blowing wind rush into mic
-          if (average > 48) {
-            micStatusText.textContent = "Blowing detected! Extinguishing...";
-            extinguishCandles();
-            return;
-          }
-          requestAnimationFrame(checkBreath);
-        }
-        checkBreath();
-
-      } catch (err) {
-        // Fallback gracefully if permissions denied
-        micStatusText.textContent = "Mic access blocked. Tap the button or flame instead!";
-        micFeedback.style.display = 'inline-flex';
-      }
-    });
-
-    /* ==========================================================================
-       4. UNIQUE CAKE SLICING & CUTTING EXPERIENCE
-       ========================================================================== */
-    const cakeStage = document.getElementById('cakeStage');
-    const cakeCutPath = document.getElementById('cakeCutPath');
-    const cakeSlice = document.getElementById('cakeSlice');
-    let isSliced = false;
-
-    function executeCakeSlice() {
-      if (isSliced) return;
-      isSliced = true;
-
-      musicPlayer.playCakeCutChime();
-
-      // Show vertical slice incision
-      cakeCutPath.style.transform = 'scaleY(1)';
-
-      // Trigger knife swipe animation
-      knifeTool.style.animation = 'none';
-      knifeTool.style.transform = 'translate(-80px, 120px) rotate(-65deg)';
-
-      setTimeout(() => {
-        // Pop out slice on golden plate
-        cakeSlice.classList.add('served');
-        knifeTool.style.display = 'none';
-        sliceGuide.style.display = 'none';
-        cutCakeBtn.style.display = 'none';
-
-        cakeNotification.innerHTML = "🎉 Delicious! Here is the first sweet slice just for you, Butku! Don't forget to write your secret wish below! 👇";
-
-        // Double Confetti blast
-        triggerConfettiParty();
-        setTimeout(triggerConfettiParty, 400);
-
-        // Smooth scroll to wish section
-        setTimeout(() => {
-          document.getElementById('stage-wish-section').scrollIntoView({ behavior: 'smooth' });
-        }, 1200);
-
-      }, 600);
-    }
-
-    cutCakeBtn.addEventListener('click', executeCakeSlice);
-
-    // Drag-to-slice interaction on Knife
-    let isDraggingKnife = false;
-
-    knifeTool.addEventListener('mousedown', () => isDraggingKnife = true);
-    knifeTool.addEventListener('touchstart', () => isDraggingKnife = true, { passive: true });
-
-    window.addEventListener('mouseup', () => {
-      if (isDraggingKnife) {
-        isDraggingKnife = false;
-        executeCakeSlice();
-      }
-    });
-
-    window.addEventListener('touchend', () => {
-      if (isDraggingKnife) {
-        isDraggingKnife = false;
-        executeCakeSlice();
-      }
-    });
-
-    window.addEventListener('mousemove', (e) => {
-      if (!isDraggingKnife || isSliced) return;
-      const cakeRect = cakeStage.getBoundingClientRect();
-      if (e.clientX >= cakeRect.left && e.clientX <= cakeRect.right && e.clientY >= cakeRect.top && e.clientY <= cakeRect.bottom) {
-        executeCakeSlice();
-        isDraggingKnife = false;
-      }
-    });
-
-    window.addEventListener('touchmove', (e) => {
-      if (!isDraggingKnife || isSliced) return;
-      const touch = e.touches[0];
-      const cakeRect = cakeStage.getBoundingClientRect();
-      if (touch.clientX >= cakeRect.left && touch.clientX <= cakeRect.right && touch.clientY >= cakeRect.top && touch.clientY <= cakeRect.bottom) {
-        executeCakeSlice();
-        isDraggingKnife = false;
-      }
-    }, { passive: true });
-
-    /* ==========================================================================
-       5. SECRET WISH SUBMISSION (Guaranteed Silent Delivery + Animation)
-       ========================================================================== */
-    const wishForm = document.getElementById('wishForm');
-    const sendWishBtn = document.getElementById('sendWishBtn');
-    const wishStatusMessage = document.getElementById('wishStatusMessage');
-    const starLayer = document.getElementById('starLayer');
-    const wishContentInput = document.getElementById('wishContent');
-
-    function triggerShootingStar() {
-      starLayer.classList.remove('active');
-      void starLayer.offsetWidth; // Force reflow
-      starLayer.classList.add('active');
-      setTimeout(() => starLayer.classList.remove('active'), 1500);
-    }
-
-    wishForm.addEventListener('submit', function() {
-      // 1. Immediately trigger animations
-      triggerShootingStar();
-
-      // 2. Button state
-      sendWishBtn.disabled = true;
-      sendWishBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Releasing to stars...</span>`;
-
-      // 3. Confirm success after brief sending animation
-      setTimeout(() => {
-        wishStatusMessage.className = 'wish-status-badge success';
-        wishStatusMessage.innerHTML = `💌 <strong>Your wish has reached my heart & inbox safely!</strong> Every word is cherished. ✨`;
-        sendWishBtn.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span>Wish Delivered to Universe! 🌠</span>`;
-        sendWishBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-        wishContentInput.disabled = true;
-        triggerConfettiParty();
-      }, 900);
-    });
-
-    /* ==========================================================================
-       6. POLAROID FLIP & LIGHTBOX INTERACTION
-       ========================================================================== */
-    function flipPolaroid(card) {
-      card.classList.toggle('flipped');
-    }
-
-    const fullLightbox = document.getElementById('fullLightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      fullLightbox.classList.add('active');
-    }
-
-    function closeLightbox(e) {
-      if (e.target === fullLightbox || e.target.classList.contains('lightbox-close-btn')) {
-        fullLightbox.classList.remove('active');
-      }
-    }
-
-    /* Smooth Scroll Hero Button */
-    document.getElementById('startJourneyBtn').addEventListener('click', () => {
-      document.getElementById('stage-cake-section').scrollIntoView({ behavior: 'smooth' });
-    });
-  </script>
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- EXPLORE WORK: CATEGORY FOLDERS / ALBUMS SHOWCASE                          -->
+<!-- ========================================================================= -->
+<section id="work" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+
+<!-- ===================================================================== -->
+<!-- VIEW 1: ALBUM / CATEGORY FOLDERS LIST                                 -->
+<!-- ===================================================================== -->
+<div id="foldersSection" class="fade-in">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4 border-b border-brand-border/60 pb-8">
+<div>
+<span class="text-xs font-semibold uppercase tracking-widest text-brand-gold flex items-center gap-1.5">
+<i class="ph-bold ph-folder-notch-open"></i> Portfolio Collections
+</span>
+<h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Explore Work by Albums</h2>
+<p class="text-slate-400 text-sm mt-2 max-w-lg">
+Select a category folder below to open and browse all photographs inside that series.
+</p>
+</div>
+</div>
+
+<!--
+               ===================================================================
+               INSTRUCTIONS: HOW TO ADD NEW CATEGORY ALBUMS
+               ===================================================================
+               To add a new album:
+               1. Copy one of the `<div class="folder-card ...">` blocks below.
+               2. Set `onclick="openAlbum('your-album-slug')"` (e.g. `openAlbum('coastal')`).
+               3. Update the cover photo `<img src="...">`, title, description, and photo count badge.
+               4. Inside the JAVASCRIPT section near the bottom of this file, add your new album
+                  photos array inside the `ALBUMS_DATA` object!
+               ===================================================================
+           -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+<!-- Folder 1: Landscapes -->
+<div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+onclick="openAlbum('landscapes')">
+<div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+<img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" 
+alt="Landscapes Album Cover" 
+class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+<span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="landscapes">
+-- Photos
+</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+<i class="ph-bold ph-folder"></i> Album
+</div>
+<h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+Wild Landscapes
+</h3>
+<p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+Towering mountain peaks, mirror lakes, and sweeping vistas at sunrise & twilight.
+</p>
+</div>
+<div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+<span>Open Collection</span>
+<i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+</div>
+</div>
+</div>
+
+<!-- Folder 2: Wildlife -->
+<div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+onclick="openAlbum('wildlife')">
+<div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+<img src="https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=900&q=80" 
+alt="Wildlife Album Cover" 
+class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+<span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="wildlife">
+-- Photos
+</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+<i class="ph-bold ph-folder"></i> Album
+</div>
+<h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+Wildlife & Fauna
+</h3>
+<p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+Intimate wildlife portraits documented respectfully across northern sanctuaries.
+</p>
+</div>
+<div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+<span>Open Collection</span>
+<i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+</div>
+</div>
+</div>
+
+<!-- Folder 3: Mountain & Trails -->
+<div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+onclick="openAlbum('adventure')">
+<div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+<img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" 
+alt="Mountain & Trails Album Cover" 
+class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108">
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+<span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="adventure">
+-- Photos
+</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+<i class="ph-bold ph-folder"></i> Album
+</div>
+<h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+Mountains & Trails
+</h3>
+<p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+High-altitude treks, jagged passes, alpine meadows, and solitary ridges.
+</p>
+</div>
+<div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+<span>Open Collection</span>
+<i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+</div>
+</div>
+</div>
+
+<!-- Folder 4: Black & White -->
+<div class="folder-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/70 hover:border-brand-gold/60 cursor-pointer flex flex-col justify-between"
+onclick="openAlbum('monochrome')">
+<div class="relative aspect-[4/3] overflow-hidden bg-black/40">
+<img src="https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=900&q=80" 
+alt="Monochrome Album Cover" 
+class="w-full h-full object-cover grayscale transition-transform duration-700 group-hover:scale-108">
+<div class="absolute inset-0 bg-gradient-to-t from-brand-card via-black/20 to-transparent"></div>
+<span class="album-count-badge absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-xs font-mono text-brand-gold font-semibold" data-album="monochrome">
+-- Photos
+</span>
+</div>
+<div class="p-5 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-1.5 text-xs text-brand-gold uppercase tracking-wider font-semibold mb-1">
+<i class="ph-bold ph-folder"></i> Album
+</div>
+<h3 class="text-xl font-serif font-bold text-white group-hover:text-brand-gold transition-colors">
+Monochrome Series
+</h3>
+<p class="text-xs text-slate-400 mt-2 line-clamp-2 leading-relaxed">
+High contrast geological forms, shadow plays, and stripped-down textures.
+</p>
+</div>
+<div class="mt-5 pt-3 border-t border-brand-border/40 flex items-center justify-between text-xs font-semibold text-slate-300 group-hover:text-brand-gold transition-colors">
+<span>Open Collection</span>
+<i class="ph-bold ph-arrow-right transition-transform group-hover:translate-x-1"></i>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- ===================================================================== -->
+<!-- VIEW 2: DEDICATED ALBUM GALLERY (Appears when an album is clicked)    -->
+<!-- ===================================================================== -->
+<div id="albumGallerySection" class="hidden">
+<!-- Navigation Header for the Opened Album -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-brand-border/60 pb-6">
+<div>
+<!-- Back Button to return to all albums -->
+<button onclick="showFolderView()" 
+class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-gold hover:text-white bg-slate-800/80 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition-all mb-3 focus:outline-none focus:ring-2 focus:ring-brand-gold">
+<i class="ph-bold ph-arrow-left"></i>
+<span>Back to All Albums</span>
+</button>
+<h2 id="albumActiveTitle" class="text-3xl sm:text-4xl font-serif font-bold text-white">Album Title</h2>
+<p id="albumActiveDesc" class="text-slate-400 text-sm mt-1 max-w-xl">Album description</p>
+</div>
+
+<div class="flex items-center gap-2 text-xs text-slate-400">
+<span id="albumActiveCount" class="font-mono text-brand-gold font-bold">0</span> photos in this collection
+</div>
+</div>
+
+<!-- Photos Grid for the active album -->
+<div id="albumPhotosGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Dynamically populated by JavaScript from ALBUMS_DATA -->
+</div>
+</div>
+
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- ABOUT SECTION                                                             -->
+<!-- ========================================================================= -->
+<section id="about" class="py-24 bg-brand-darker/80 border-t border-b border-brand-border/60">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+<!-- Portrait Card -->
+<div class="lg:col-span-5 relative">
+<div class="relative mx-auto max-w-md lg:max-w-none rounded-3xl overflow-hidden border border-brand-border/80 shadow-2xl">
+<img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80" 
+alt="Photographer Portrait" 
+class="w-full aspect-[4/5] object-cover">
+<div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<span class="text-xs uppercase tracking-widest text-brand-gold font-semibold">Rakeshkumar Shingod</span>
+<h3 class="text-2xl font-serif font-bold text-white mt-0.5">WildLight Vista</h3>
+</div>
+</div>
+</div>
+
+<!-- Bio & Philosophy -->
+<div class="lg:col-span-7 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 text-xs font-medium">
+<i class="ph ph-compass"></i> Behind The Lens
+</div>
+
+<h2 class="text-3xl sm:text-4xl font-serif font-bold text-white leading-tight">
+Chasing raw, fleeting stories written by dawn, wind, and altitude.
+</h2>
+
+<p class="text-slate-300 text-base leading-relaxed">
+Welcome to <strong>WildLight Vista</strong>. For over a decade, I’ve journeyed beyond marked trails to document the world's most dramatic landscapes and elusive wildlife. My work is anchored in patience, ethical wildlife distancing, and deep conservation respect.
+</p>
+
+<p class="text-slate-400 text-sm leading-relaxed">
+Every photograph is an authentic encounter under natural light. Images are organized into curated themed albums to offer immersive visual journeys across high alpine, dense boreal forests, and arctic frontiers.
+</p>
+
+<!-- Stats -->
+<div class="grid grid-cols-3 gap-4 pt-4 border-t border-brand-border/60">
+<div>
+<div class="text-2xl sm:text-3xl font-bold font-serif text-brand-gold">2+</div>
+<div class="text-xs text-slate-400 mt-1 uppercase tracking-wider">States Explored</div>
+</div>
+<div>
+<div class="text-2xl sm:text-3xl font-bold font-serif text-brand-gold">500+</div>
+<div class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Prints Shipped</div>
+</div>
+<div>
+<div class="text-2xl sm:text-3xl font-bold font-serif text-brand-gold">100%</div>
+<div class="text-xs text-slate-400 mt-1 uppercase tracking-wider">Ethical Habitats</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- CONTACT SECTION                                                           -->
+<!-- ========================================================================= -->
+<section id="contact" class="py-24 bg-brand-darker border-t border-brand-border/60">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+
+<div>
+<span class="text-xs font-semibold uppercase tracking-widest text-brand-gold">Collaborate</span>
+<h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-1">Get in Touch</h2>
+<p class="text-slate-300 text-sm mt-3 leading-relaxed">
+Looking for editorial licensing, museum fine art prints, or interested in a photography expedition workshop? Send a direct message below.
+</p>
+
+<div class="mt-8 space-y-4">
+<div class="flex items-center gap-4 text-slate-300">
+<div class="w-10 h-10 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center justify-center text-brand-gold">
+<i class="ph ph-envelope text-lg"></i>
+</div>
+<div>
+<div class="text-xs text-slate-400">Direct Email</div>
+<a href="mailto:contact@wildlightvista.com" class="text-sm font-medium hover:text-brand-gold">contact@wildlightvista.com</a>
+</div>
+</div>
+
+<div class="flex items-center gap-4 text-slate-300">
+<div class="w-10 h-10 rounded-lg bg-slate-800/80 border border-slate-700 flex items-center justify-center text-brand-gold">
+<i class="ph ph-map-pin text-lg"></i>
+</div>
+<div>
+<div class="text-xs text-slate-400">Base Location</div>
+<span class="text-sm font-medium">Worldwide Expeditions</span>
+</div>
+</div>
+</div>
+
+<!-- Social Handles -->
+<div class="pt-8 flex items-center gap-3">
+<a href="https://www.instagram.com/godshinsharke/?__pwa=1#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-full border border-slate-700 hover:border-brand-gold bg-slate-900/60 flex items-center justify-center text-slate-300 hover:text-brand-gold transition-colors">
+<i class="ph-bold ph-instagram-logo"></i>
+</a>
+<a href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="w-10 h-10 rounded-full border border-slate-700 hover:border-brand-gold bg-slate-900/60 flex items-center justify-center text-slate-300 hover:text-brand-gold transition-colors">
+<i class="ph-bold ph-github-logo"></i>
+</a>
+<a href="https://500px.com" target="_blank" rel="noopener noreferrer" aria-label="500px" class="w-10 h-10 rounded-full border border-slate-700 hover:border-brand-gold bg-slate-900/60 flex items-center justify-center text-slate-300 hover:text-brand-gold transition-colors font-bold text-xs">
+500px
+</a>
+</div>
+</div>
+
+<!-- ------------------------------------------------------------- -->
+<!-- CONTACT FORM (FormSubmit AJAX Integration)                    -->
+<!-- ------------------------------------------------------------- -->
+<!-- 
+                   HOW TO CONFIGURE YOUR EMAIL:
+                   Replace "your-email@example.com" in the action URL below with 
+                   your actual email address (e.g. yourname@gmail.com).
+               -->
+<div class="glass-card rounded-3xl p-6 sm:p-8 border border-brand-border/60">
+<form id="portfolioContactForm" 
+action="https://formsubmit.co/ajax/shingod.rakeshkumar@gmail.com" 
+method="POST" 
+class="space-y-4">
+
+<input type="text" name="_honey" style="display:none">
+<input type="hidden" name="_captcha" value="false">
+
+<div>
+<label for="name" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Your Name *</label>
+<input type="text" id="name" name="name" required class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold text-sm transition-colors" placeholder="Jane Doe">
+</div>
+
+<div>
+<label for="email" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Email Address *</label>
+<input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold text-sm transition-colors" placeholder="jane@example.com">
+</div>
+
+<div>
+<label for="message" class="block text-xs uppercase tracking-wider text-slate-400 mb-1.5 font-semibold">Message *</label>
+<textarea id="message" name="message" rows="4" required class="w-full px-4 py-3 rounded-xl bg-brand-dark/90 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-brand-gold text-sm transition-colors" placeholder="Tell me about your project, wall print dimensions, or licensing needs..."></textarea>
+</div>
+
+<button id="submitBtn" type="submit" class="w-full py-3.5 rounded-xl bg-brand-gold hover:bg-amber-400 text-black font-semibold text-sm tracking-wide transition-all duration-300 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+<span id="submitBtnText">Send Message</span>
+<i id="submitBtnIcon" class="ph-bold ph-paper-plane-tilt"></i>
+<i id="submitBtnSpinner" class="ph-bold ph-spinner animate-spin hidden"></i>
+</button>
+
+<div id="formStatus" class="hidden text-center text-xs p-3.5 rounded-xl transition-all"></div>
+</form>
+</div>
+
+</div>
+</div>
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- INTERACTIVE LIGHTBOX MODAL (Image Preview + EXIF Details — NO DOWNLOAD)   -->
+<!-- ========================================================================= -->
+<div id="lightbox" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/95 backdrop-blur-md">
+
+<!-- Close Button -->
+<button id="lightboxClose" aria-label="Close Lightbox" class="absolute top-4 right-4 sm:top-6 sm:right-6 text-slate-400 hover:text-white bg-slate-800/70 p-2.5 rounded-full z-20 focus:outline-none focus:ring-2 focus:ring-brand-gold transition-colors">
+<i class="ph-bold ph-x text-2xl"></i>
+</button>
+
+<!-- Previous Button -->
+<button id="lightboxPrev" aria-label="Previous Image" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/80 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
+<i class="ph-bold ph-caret-left text-2xl"></i>
+</button>
+
+<!-- Next Button -->
+<button id="lightboxNext" aria-label="Next Image" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white bg-slate-900/80 p-3 rounded-full z-20 focus:outline-none hover:bg-brand-gold hover:text-black transition-all">
+<i class="ph-bold ph-caret-right text-2xl"></i>
+</button>
+
+<!-- Content Frame -->
+<div class="relative max-w-5xl w-full flex flex-col items-center max-h-[92vh]">
+<!-- Main Photo Display -->
+<div class="w-full flex justify-center overflow-hidden rounded-xl bg-brand-dark/40 select-none">
+<img id="lightboxImg" src="" alt="WildLight Vista Full Photograph" class="max-h-[70vh] w-auto max-w-full object-contain rounded-xl shadow-2xl transition-all duration-300">
+</div>
+
+<!-- Lightbox Metadata Bar -->
+<div class="w-full mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-2">
+<div>
+<h3 id="lightboxTitle" class="text-lg font-serif font-bold text-white">Title</h3>
+<div id="lightboxLocation" class="text-xs text-brand-gold flex items-center gap-1 mt-0.5">
+<i class="ph-bold ph-map-pin"></i> Location
+</div>
+</div>
+
+<!-- Camera EXIF Settings Badges -->
+<div class="flex items-center gap-2 sm:gap-3 text-[11px] font-mono text-slate-300 bg-slate-800/80 px-3.5 py-2 rounded-lg border border-slate-700">
+<span id="metaFocal">--mm</span>
+<span class="text-slate-600">|</span>
+<span id="metaAperture">f/--</span>
+<span class="text-slate-600">|</span>
+<span id="metaShutter">1/--s</span>
+<span class="text-slate-600">|</span>
+<span id="metaIso">ISO --</span>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- ========================================================================= -->
+<!-- FOOTER                                                                    -->
+<!-- ========================================================================= -->
+<footer class="bg-brand-darker border-t border-brand-border/60 py-8 px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="text-center sm:text-left">
+<p class="text-xs text-slate-400">
+&copy; <span id="currentYear"></span> <strong>WildLight Vista</strong>. All rights reserved. Visuals protected under international copyright law.
+</p>
+</div>
+
+<a href="#" class="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-brand-gold transition-colors">
+<span>Back to top</span>
+<i class="ph-bold ph-arrow-up"></i>
+</a>
+</div>
+</footer>
+
+
+<!-- ========================================================================= -->
+<!-- JAVASCRIPT LOGIC & PHOTO ALBUM DATABASE                                   -->
+<!-- ========================================================================= -->
+<script>
+// Set dynamic current year in footer
+document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+/*
+           =======================================================================
+           ALBUMS & PHOTO DATABASE (HOW TO ADD NEW PHOTOS & CATEGORIES)
+           =======================================================================
+           Each album has:
+           - title: Album display name
+           - desc: Short subtitle or description
+           - photos: Array of photo items.
+           
+           To ADD A PHOTO into an existing album:
+           Add a new object inside the photos array:
+           {
+               url: "images/your-photo.jpg",  // Or URL from your repo or Unsplash
+               title: "Photo Title",
+               location: "Location, Country",
+               focal: "35mm",
+               aperture: "f/8",
+               shutter: "1/500s",
+               iso: "100"
+           }
+           =======================================================================
+       */
+const ALBUMS_DATA = {
+landscapes: {
+title: "Wild Landscapes",
+desc: "Glacial lakes, dramatic morning mists, and untouched mountain ranges.",
+photos: [
+{
+url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+title: "Emerald Lake Solitude",
+location: "Banff National Park, Canada",
+focal: "24mm",
+aperture: "f/8.0",
+shutter: "1/320s",
+iso: "100"
+},
+{
+url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
+title: "Golden Hour Crest",
+location: "Patagonia, Chile",
+focal: "28mm",
+aperture: "f/13",
+shutter: "1/80s",
+iso: "100"
+},
+{
+url: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&w=1200&q=80",
+title: "Valley of the Sunbeams",
+location: "Yosemite, California",
+focal: "50mm",
+aperture: "f/5.6",
+shutter: "1/200s",
+iso: "200"
+},
+{
+url: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=1200&q=80",
+title: "Canyon Cascade",
+location: "Oregon, USA",
+focal: "16mm",
+aperture: "f/11",
+shutter: "1.5s",
+iso: "64"
+}
+]
+},
+wildlife: {
+title: "Wildlife & Fauna",
+desc: "Wild animals documented in their pristine natural habitats without disturbance.",
+photos: [
+{
+url: "images/Eagle1.heic?auto=format&fit=crop&w=1200&q=80",
+title: "Monarch of the Mist",
+location: "Highlands, Scotland",
+focal: "400mm",
+aperture: "f/4.0",
+shutter: "1/1000s",
+iso: "800"
+},
+{
+url: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=1200&q=80",
+title: "Monarch of the Mist",
+location: "Highlands, Scotland",
+focal: "400mm",
+aperture: "f/4.0",
+shutter: "1/1000s",
+iso: "800"
+},
+{
+url: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1200&q=80",
+title: "Arctic Stare",
+location: "Svalbard, Norway",
+focal: "600mm",
+aperture: "f/2.8",
+shutter: "1/1600s",
+iso: "400"
+},
+{
+url: "https://images.unsplash.com/photo-1534188753412-3e26d0d618d6?auto=format&fit=crop&w=1200&q=80",
+title: "Grizzly on the Rapids",
+location: "Katmai, Alaska",
+focal: "500mm",
+aperture: "f/4.5",
+shutter: "1/2000s",
+iso: "640"
+}
+]
+},
+adventure: {
+title: "Mountains & Trails",
+desc: "Documenting human presence and solitary paths amidst colossal geology.",
+photos: [
+{
+url: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80",
+title: "Edge of the Abyss",
+location: "Yosemite Valley, USA",
+focal: "16mm",
+aperture: "f/5.6",
+shutter: "1/400s",
+iso: "100"
+},
+{
+url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+title: "Pass to the Clouds",
+location: "Swiss Alps, Switzerland",
+focal: "24mm",
+aperture: "f/8.0",
+shutter: "1/640s",
+iso: "160"
+},
+{
+url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
+title: "Night Under the Ridgeline",
+location: "Fitz Roy, Argentina",
+focal: "14mm",
+aperture: "f/2.8",
+shutter: "20s",
+iso: "3200"
+}
+]
+},
+monochrome: {
+title: "Monochrome Series",
+desc: "Dramatic contrast studies in pure light, deep shadow, and raw textures.",
+photos: [
+{
+url: "https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=1200&q=80",
+title: "Textures of Silence",
+location: "Dolomites, Italy",
+focal: "35mm",
+aperture: "f/11",
+shutter: "1/250s",
+iso: "200"
+},
+{
+url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+title: "Dune Ripples in Shadow",
+location: "Death Valley, USA",
+focal: "70mm",
+aperture: "f/8.0",
+shutter: "1/500s",
+iso: "100"
+}
+]
+}
+};
+
+// Populate photo counts on album badges automatically
+function updateAlbumBadges() {
+document.querySelectorAll('.album-count-badge').forEach(badge => {
+const albumKey = badge.getAttribute('data-album');
+if (ALBUMS_DATA[albumKey]) {
+const count = ALBUMS_DATA[albumKey].photos.length;
+badge.textContent = `${count} ${count === 1 ? 'Photo' : 'Photos'}`;
+}
+});
+}
+updateAlbumBadges();
+
+// -------------------------------------------------------------
+// View Switching Logic (Folders vs Album Gallery)
+// -------------------------------------------------------------
+const foldersSection = document.getElementById('foldersSection');
+const albumGallerySection = document.getElementById('albumGallerySection');
+const albumActiveTitle = document.getElementById('albumActiveTitle');
+const albumActiveDesc = document.getElementById('albumActiveDesc');
+const albumActiveCount = document.getElementById('albumActiveCount');
+const albumPhotosGrid = document.getElementById('albumPhotosGrid');
+
+let currentActiveAlbumPhotos = [];
+
+function showFolderView() {
+albumGallerySection.classList.add('hidden');
+foldersSection.classList.remove('hidden');
+foldersSection.classList.add('fade-in');
+}
+
+function openAlbum(albumKey) {
+const album = ALBUMS_DATA[albumKey];
+if (!album) return;
+
+currentActiveAlbumPhotos = album.photos;
+
+albumActiveTitle.textContent = album.title;
+albumActiveDesc.textContent = album.desc;
+albumActiveCount.textContent = album.photos.length;
+
+// Clear and render photos
+albumPhotosGrid.innerHTML = '';
+album.photos.forEach((photo, idx) => {
+const photoCard = document.createElement('div');
+photoCard.className = "photo-card group relative rounded-2xl overflow-hidden bg-brand-card border border-brand-border/60 cursor-pointer aspect-[4/3]";
+photoCard.innerHTML = `
+                   <img src="${photo.url}" alt="${photo.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                   <div class="absolute inset-0 bg-gradient-to-t from-brand-darker via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                       <span class="text-[11px] font-semibold text-brand-gold uppercase tracking-wider flex items-center gap-1">
+                           <i class="ph-bold ph-map-pin"></i> ${photo.location}
+                       </span>
+                       <h3 class="text-lg font-serif font-bold text-white mt-0.5">${photo.title}</h3>
+                       <div class="flex items-center gap-2 mt-2 text-[10px] text-slate-300 font-mono">
+                           <span class="bg-black/60 px-2 py-0.5 rounded">${photo.focal}</span>
+                           <span class="bg-black/60 px-2 py-0.5 rounded">${photo.aperture}</span>
+                           <span class="bg-black/60 px-2 py-0.5 rounded">${photo.shutter}</span>
+                           <span class="bg-black/60 px-2 py-0.5 rounded">ISO ${photo.iso}</span>
+                       </div>
+                   </div>
+               `;
+photoCard.addEventListener('click', () => openLightbox(idx));
+albumPhotosGrid.appendChild(photoCard);
+});
+
+foldersSection.classList.add('hidden');
+albumGallerySection.classList.remove('hidden');
+albumGallerySection.classList.add('fade-in');
+
+// Smoothly scroll to the top of work area
+document.getElementById('work').scrollIntoView({ behavior: 'smooth' });
+}
+
+// -------------------------------------------------------------
+// Fullscreen Lightbox Modal (No Download Button)
+// -------------------------------------------------------------
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxTitle = document.getElementById('lightboxTitle');
+const lightboxLocation = document.getElementById('lightboxLocation');
+const metaFocal = document.getElementById('metaFocal');
+const metaAperture = document.getElementById('metaAperture');
+const metaShutter = document.getElementById('metaShutter');
+const metaIso = document.getElementById('metaIso');
+const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+
+let currentPhotoIndex = 0;
+
+function openLightbox(index) {
+if (!currentActiveAlbumPhotos || currentActiveAlbumPhotos.length === 0) return;
+
+currentPhotoIndex = index;
+const photo = currentActiveAlbumPhotos[currentPhotoIndex];
+
+lightboxImg.src = photo.url;
+lightboxImg.alt = photo.title;
+lightboxTitle.textContent = photo.title;
+lightboxLocation.innerHTML = `<i class="ph-bold ph-map-pin"></i> ${photo.location}`;
+
+metaFocal.textContent = photo.focal || '--mm';
+metaAperture.textContent = photo.aperture || 'f/--';
+metaShutter.textContent = photo.shutter || '1/--s';
+metaIso.textContent = `ISO ${photo.iso || '--'}`;
+
+lightbox.classList.add('active');
+document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+lightbox.classList.remove('active');
+document.body.style.overflow = '';
+}
+
+function showNextPhoto() {
+if (currentActiveAlbumPhotos.length === 0) return;
+currentPhotoIndex = (currentPhotoIndex + 1) % currentActiveAlbumPhotos.length;
+openLightbox(currentPhotoIndex);
+}
+
+function showPrevPhoto() {
+if (currentActiveAlbumPhotos.length === 0) return;
+currentPhotoIndex = (currentPhotoIndex - 1 + currentActiveAlbumPhotos.length) % currentActiveAlbumPhotos.length;
+openLightbox(currentPhotoIndex);
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxNext.addEventListener('click', showNextPhoto);
+lightboxPrev.addEventListener('click', showPrevPhoto);
+
+lightbox.addEventListener('click', (e) => {
+if (e.target === lightbox) closeLightbox();
+});
+
+window.addEventListener('keydown', (e) => {
+if (!lightbox.classList.contains('active')) return;
+if (e.key === 'Escape') closeLightbox();
+if (e.key === 'ArrowRight') showNextPhoto();
+if (e.key === 'ArrowLeft') showPrevPhoto();
+});
+
+// -------------------------------------------------------------
+// Mobile Navigation Drawer Toggle
+// -------------------------------------------------------------
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuIcon = document.getElementById('menuIcon');
+
+mobileMenuBtn.addEventListener('click', () => {
+const isHidden = mobileMenu.classList.toggle('hidden');
+menuIcon.classList.replace(isHidden ? 'ph-x' : 'ph-list', isHidden ? 'ph-list' : 'ph-x');
+});
+
+document.querySelectorAll('.mobile-link').forEach(link => {
+link.addEventListener('click', () => {
+mobileMenu.classList.add('hidden');
+menuIcon.classList.replace('ph-x', 'ph-list');
+});
+});
+
+// -------------------------------------------------------------
+// Contact Form Submission via AJAX (fetch)
+// -------------------------------------------------------------
+const contactForm = document.getElementById('portfolioContactForm');
+const submitBtn = document.getElementById('submitBtn');
+const submitBtnText = document.getElementById('submitBtnText');
+const submitBtnIcon = document.getElementById('submitBtnIcon');
+const submitBtnSpinner = document.getElementById('submitBtnSpinner');
+const formStatus = document.getElementById('formStatus');
+
+contactForm.addEventListener('submit', async (e) => {
+e.preventDefault();
+
+submitBtn.disabled = true;
+submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+submitBtnText.textContent = 'Sending message...';
+submitBtnIcon.classList.add('hidden');
+submitBtnSpinner.classList.remove('hidden');
+formStatus.className = 'hidden';
+
+const formData = new FormData(contactForm);
+const endpoint = contactForm.getAttribute('action');
+
+try {
+const response = await fetch(endpoint, {
+method: 'POST',
+body: formData,
+headers: { 'Accept': 'application/json' }
+});
+
+if (response.ok) {
+formStatus.className = 'text-center text-xs p-3.5 rounded-xl bg-emerald-950/80 text-emerald-300 border border-emerald-500/50 block';
+formStatus.innerHTML = '<i class="ph-bold ph-check-circle text-base align-middle mr-1.5"></i> Thank you! Your message has been sent to my inbox.';
+contactForm.reset();
+} else {
+throw new Error('Server returned an error.');
+}
+} catch (error) {
+formStatus.className = 'text-center text-xs p-3.5 rounded-xl bg-rose-950/80 text-rose-300 border border-rose-500/50 block';
+formStatus.innerHTML = '<i class="ph-bold ph-warning-circle text-base align-middle mr-1.5"></i> Message failed to send. Please check your action email in index.html or reach out via direct email.';
+} finally {
+submitBtn.disabled = false;
+submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+submitBtnText.textContent = 'Send Message';
+submitBtnIcon.classList.remove('hidden');
+submitBtnSpinner.classList.add('hidden');
+
+setTimeout(() => {
+formStatus.classList.add('hidden');
+}, 7000);
+}
+});
+</script>
 </body>
 </html>
